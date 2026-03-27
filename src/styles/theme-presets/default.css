@@ -1,0 +1,44 @@
+/**
+ * Default brand preset.
+ *
+ * To create a new brand (e.g. blue.css), copy this file and override
+ * any tokens below. Import the preset in the root layout AFTER globals.css
+ * so the cascade applies correctly.
+ *
+ * Only brand-influencing tokens are listed here. Full token definitions
+ * live in globals.css — these values are intentionally identical to
+ * those defaults so this file serves as a self-documenting override point.
+ */
+
+:root {
+  /* Brand palette */
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  /* Semantic feedback */
+  --success: oklch(0.723 0.191 142.495);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.795 0.184 86.047);
+  --warning-foreground: oklch(0.145 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  /* Shape */
+  --radius: 0.625rem;
+
+  /* Spacing rhythm */
+  --section-spacing-sm: 3rem;
+  --section-spacing-md: 5rem;
+  --section-spacing-lg: 8rem;
+
+  /* Typography — swap to a different Next.js font variable to rebrand */
+  --font-heading: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+  --font-body: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+  --font-accent: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+}
