@@ -15,7 +15,12 @@ export const post = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      options: { source: "title", maxLength: 96 },
+      description: "URL path for this post (auto-generated from title). Changing it breaks existing links.",
+      options: {
+        source: "title",
+        maxLength: 96,
+        isUnique: (value, context) => context.defaultIsUnique(value, context),
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -35,17 +40,20 @@ export const post = defineType({
       name: "publishedAt",
       title: "Published at",
       type: "datetime",
+      description: "Controls the publish date shown on the post and sort order in listings.",
     }),
     defineField({
       name: "author",
       title: "Author",
       type: "string",
+      description: "Author's name as it appears on the post.",
     }),
     defineField({
       name: "categories",
       title: "Categories",
       type: "array",
       of: [defineArrayMember({ type: "string" })],
+      description: "Content tags used for filtering and related-post grouping.",
     }),
     defineField({
       name: "body",

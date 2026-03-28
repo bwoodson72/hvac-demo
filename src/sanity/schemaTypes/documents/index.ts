@@ -1,3 +1,10 @@
+// ── Singletons ───────────────────────────────────────────────────────────────
+export { siteSettings } from "./siteSettings"
+export { headerSettings } from "./headerSettings"
+export { footerSettings } from "./footerSettings"
+export { homepage } from "./homepage"
+
+// ── Collection documents ──────────────────────────────────────────────────────
 export { service } from "./service"
 export { serviceArea } from "./serviceArea"
 export { page } from "./page"

@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import {
   imageWithAltFragment,
   heroFragment,
@@ -72,9 +72,11 @@ export const serviceBySlugQuery = groq`
 // ── Fetchers ──────────────────────────────────────────────────────────────────
 
 export async function getAllServices(): Promise<ServiceListItemData[]> {
-  return sanityClient.fetch<ServiceListItemData[]>(allServicesQuery)
+  const { data } = await sanityFetch({ query: allServicesQuery })
+  return (data as ServiceListItemData[]) ?? []
 }
 
 export async function getServiceBySlug(slug: string): Promise<ServiceData | null> {
-  return sanityClient.fetch<ServiceData | null>(serviceBySlugQuery, { slug })
+  const { data } = await sanityFetch({ query: serviceBySlugQuery, params: { slug } })
+  return data as ServiceData | null
 }

@@ -17,6 +17,10 @@ import {
   promoBannerSection,
 } from "./objects/sections"
 import {
+  siteSettings,
+  headerSettings,
+  footerSettings,
+  homepage,
   service,
   serviceArea,
   page,
@@ -57,6 +61,12 @@ export const schemaTypes = [
   statsSection,
   teamSection,
   promoBannerSection,
+
+  // ── Singleton documents ──────────────────────────────────────
+  siteSettings,
+  headerSettings,
+  footerSettings,
+  homepage,
 
   // ── Collection documents ─────────────────────────────────────
   service,

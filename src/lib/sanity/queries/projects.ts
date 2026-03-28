@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import { imageWithAltFragment } from "./_fragments"
 import type { ProjectData } from "../types"
 
@@ -33,9 +33,11 @@ export const featuredProjectsQuery = groq`
 `
 
 export async function getAllProjects(): Promise<ProjectData[]> {
-  return sanityClient.fetch<ProjectData[]>(allProjectsQuery)
+  const { data } = await sanityFetch({ query: allProjectsQuery })
+  return (data as ProjectData[]) ?? []
 }
 
 export async function getFeaturedProjects(): Promise<ProjectData[]> {
-  return sanityClient.fetch<ProjectData[]>(featuredProjectsQuery)
+  const { data } = await sanityFetch({ query: featuredProjectsQuery })
+  return (data as ProjectData[]) ?? []
 }

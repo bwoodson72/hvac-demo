@@ -21,27 +21,32 @@ export const hero = defineType({
       name: "subtitle",
       title: "Subtitle",
       type: "string",
+      description: "Supporting line shown below the main title.",
     }),
     defineField({
       name: "body",
       title: "Body text",
       type: "text",
       rows: 4,
+      description: "Optional paragraph below the subtitle. Keep to 1–2 sentences.",
     }),
     defineField({
       name: "primaryCta",
       title: "Primary CTA",
       type: "link",
+      description: "Main call-to-action button (e.g., 'Get a Free Quote').",
     }),
     defineField({
       name: "secondaryCta",
       title: "Secondary CTA",
       type: "link",
+      description: "Optional secondary button or link.",
     }),
     defineField({
       name: "image",
       title: "Image",
       type: "imageWithAlt",
+      description: "Required for the 'split' and 'imageRight' variants.",
     }),
     defineField({
       name: "backgroundStyle",
@@ -62,6 +67,7 @@ export const hero = defineType({
       name: "variant",
       title: "Layout variant",
       type: "string",
+      description: "Controls the hero layout. 'Split' = text left, image right. 'Compact' = smaller height, good for inner pages.",
       options: {
         list: [
           { title: "Centered", value: "centered" },

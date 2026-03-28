@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import { imageWithAltFragment, linkFragment, seoFragment } from "./_fragments"
 import type {
   SiteSettingsData,
@@ -63,13 +63,16 @@ export const footerSettingsQuery = groq`
 // ── Fetchers ──────────────────────────────────────────────────────────────────
 
 export async function getSiteSettings(): Promise<SiteSettingsData | null> {
-  return sanityClient.fetch<SiteSettingsData | null>(siteSettingsQuery)
+  const { data } = await sanityFetch({ query: siteSettingsQuery })
+  return data as SiteSettingsData | null
 }
 
 export async function getHeaderSettings(): Promise<HeaderSettingsData | null> {
-  return sanityClient.fetch<HeaderSettingsData | null>(headerSettingsQuery)
+  const { data } = await sanityFetch({ query: headerSettingsQuery })
+  return data as HeaderSettingsData | null
 }
 
 export async function getFooterSettings(): Promise<FooterSettingsData | null> {
-  return sanityClient.fetch<FooterSettingsData | null>(footerSettingsQuery)
+  const { data } = await sanityFetch({ query: footerSettingsQuery })
+  return data as FooterSettingsData | null
 }

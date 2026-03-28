@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import { imageWithAltFragment } from "./_fragments"
 import type { TeamMemberData } from "../types"
 
@@ -29,9 +29,11 @@ export const featuredTeamMembersQuery = groq`
 `
 
 export async function getAllTeamMembers(): Promise<TeamMemberData[]> {
-  return sanityClient.fetch<TeamMemberData[]>(allTeamMembersQuery)
+  const { data } = await sanityFetch({ query: allTeamMembersQuery })
+  return (data as TeamMemberData[]) ?? []
 }
 
 export async function getFeaturedTeamMembers(): Promise<TeamMemberData[]> {
-  return sanityClient.fetch<TeamMemberData[]>(featuredTeamMembersQuery)
+  const { data } = await sanityFetch({ query: featuredTeamMembersQuery })
+  return (data as TeamMemberData[]) ?? []
 }

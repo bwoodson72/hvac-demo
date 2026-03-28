@@ -22,13 +22,18 @@ export const testimonial = defineType({
       title: "Quote",
       type: "text",
       rows: 4,
-      validation: (Rule) => Rule.required(),
+      description: "The customer's exact words. Aim for 40–200 characters for best display.",
+      validation: (Rule) => [
+        Rule.required(),
+        Rule.min(20).warning("Short quotes (under 20 characters) may not be impactful."),
+      ],
     }),
     defineField({
       name: "rating",
       title: "Rating",
       type: "number",
-      description: "1–5 stars",
+      description: "Star rating from 1 to 5.",
+      initialValue: 5,
       validation: (Rule) =>
         Rule.required().min(1).max(5).integer().error("Rating must be a whole number between 1 and 5."),
     }),

@@ -30,3 +30,14 @@ export const sanityClientWithToken = createClient({
   useCdn: false, // bypass CDN so drafts are always fresh
   token: env.readToken,
 })
+
+/**
+ * Returns the appropriate client for the given context.
+ * Pass `preview: true` to get the authenticated, CDN-bypassing client
+ * (e.g., inside a Route Handler that has already validated draft mode).
+ * Prefer `sanityFetch` from `@/lib/sanity/live` for page components —
+ * it handles perspective switching automatically.
+ */
+export function getClient(preview?: boolean) {
+  return preview ? sanityClientWithToken : sanityClient
+}

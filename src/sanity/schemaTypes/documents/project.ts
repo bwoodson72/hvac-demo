@@ -15,23 +15,31 @@ export const project = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      options: { source: "title", maxLength: 96 },
+      description: "URL path for this project (auto-generated from title).",
+      options: {
+        source: "title",
+        maxLength: 96,
+        isUnique: (value, context) => context.defaultIsUnique(value, context),
+      },
     }),
     defineField({
       name: "summary",
       title: "Summary",
       type: "text",
       rows: 3,
+      description: "Brief description of the project shown in gallery cards.",
     }),
     defineField({
       name: "beforeImage",
       title: "Before image",
       type: "imageWithAlt",
+      description: "Photo taken before the work was completed.",
     }),
     defineField({
       name: "afterImage",
       title: "After image",
       type: "imageWithAlt",
+      description: "Photo taken after completion. Used as the card thumbnail.",
     }),
     defineField({
       name: "galleryImages",
@@ -68,6 +76,7 @@ export const project = defineType({
       name: "displayOrder",
       title: "Display order",
       type: "number",
+      description: "Lower numbers appear first in the gallery.",
     }),
   ],
   preview: {

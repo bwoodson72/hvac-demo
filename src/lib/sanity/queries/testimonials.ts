@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import type { TestimonialData } from "../types"
 
 const testimonialFields = groq`
@@ -28,9 +28,11 @@ export const featuredTestimonialsQuery = groq`
 `
 
 export async function getAllTestimonials(): Promise<TestimonialData[]> {
-  return sanityClient.fetch<TestimonialData[]>(allTestimonialsQuery)
+  const { data } = await sanityFetch({ query: allTestimonialsQuery })
+  return (data as TestimonialData[]) ?? []
 }
 
 export async function getFeaturedTestimonials(): Promise<TestimonialData[]> {
-  return sanityClient.fetch<TestimonialData[]>(featuredTestimonialsQuery)
+  const { data } = await sanityFetch({ query: featuredTestimonialsQuery })
+  return (data as TestimonialData[]) ?? []
 }

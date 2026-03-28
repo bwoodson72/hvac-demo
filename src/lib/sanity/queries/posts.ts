@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import { imageWithAltFragment, seoFragment } from "./_fragments"
 import type { PostData, PostListItemData } from "../types"
 
@@ -36,9 +36,11 @@ export const postBySlugQuery = groq`
 `
 
 export async function getAllPosts(): Promise<PostListItemData[]> {
-  return sanityClient.fetch<PostListItemData[]>(allPostsQuery)
+  const { data } = await sanityFetch({ query: allPostsQuery })
+  return (data as PostListItemData[]) ?? []
 }
 
 export async function getPostBySlug(slug: string): Promise<PostData | null> {
-  return sanityClient.fetch<PostData | null>(postBySlugQuery, { slug })
+  const { data } = await sanityFetch({ query: postBySlugQuery, params: { slug } })
+  return data as PostData | null
 }

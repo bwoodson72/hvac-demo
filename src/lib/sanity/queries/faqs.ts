@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import type { FaqData } from "../types"
 
 const faqFields = groq`
@@ -30,13 +30,16 @@ export const featuredFaqsQuery = groq`
 `
 
 export async function getAllFaqs(): Promise<FaqData[]> {
-  return sanityClient.fetch<FaqData[]>(allFaqsQuery)
+  const { data } = await sanityFetch({ query: allFaqsQuery })
+  return (data as FaqData[]) ?? []
 }
 
 export async function getFaqsByCategory(category: string): Promise<FaqData[]> {
-  return sanityClient.fetch<FaqData[]>(faqsByCategoryQuery, { category })
+  const { data } = await sanityFetch({ query: faqsByCategoryQuery, params: { category } })
+  return (data as FaqData[]) ?? []
 }
 
 export async function getFeaturedFaqs(): Promise<FaqData[]> {
-  return sanityClient.fetch<FaqData[]>(featuredFaqsQuery)
+  const { data } = await sanityFetch({ query: featuredFaqsQuery })
+  return (data as FaqData[]) ?? []
 }

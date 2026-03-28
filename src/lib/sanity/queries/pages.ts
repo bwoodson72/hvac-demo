@@ -1,5 +1,5 @@
 import { groq } from "next-sanity"
-import { sanityClient } from "../client"
+import { sanityFetch } from "../live"
 import { heroFragment, seoFragment, sectionsFragment } from "./_fragments"
 import type { PageData } from "../types"
 
@@ -26,5 +26,6 @@ export const allPagesNavQuery = groq`
 `
 
 export async function getPageBySlug(slug: string): Promise<PageData | null> {
-  return sanityClient.fetch<PageData | null>(pageBySlugQuery, { slug })
+  const { data } = await sanityFetch({ query: pageBySlugQuery, params: { slug } })
+  return data as PageData | null
 }

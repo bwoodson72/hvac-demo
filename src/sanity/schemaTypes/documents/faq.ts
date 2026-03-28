@@ -9,6 +9,7 @@ export const faq = defineType({
       name: "question",
       title: "Question",
       type: "string",
+      description: "Write the question as a customer would ask it (e.g., 'How long does installation take?').",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -16,12 +17,14 @@ export const faq = defineType({
       title: "Answer",
       type: "array",
       of: [defineArrayMember({ type: "block" })],
+      description: "Clear, concise answer. This text is also used in FAQ structured data for search engines.",
       validation: (Rule) => Rule.required().min(1).error("An answer is required."),
     }),
     defineField({
       name: "category",
       title: "Category",
       type: "string",
+      description: "Group FAQs by topic for organized display on the FAQ page.",
       options: {
         list: [
           { title: "General", value: "general" },
@@ -57,6 +60,7 @@ export const faq = defineType({
       name: "displayOrder",
       title: "Display order",
       type: "number",
+      description: "Lower numbers appear first within each category.",
     }),
   ],
   preview: {
