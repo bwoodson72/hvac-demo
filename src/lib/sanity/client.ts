@@ -5,7 +5,7 @@ import { env } from "./env"
 // time when NEXT_PUBLIC_SANITY_PROJECT_ID is not yet set. Actual fetches will
 // fail gracefully; every page wraps fetches in try/catch with fallback content.
 const sharedConfig = {
-  projectId: env.projectId || "__unconfigured__",
+  projectId: env.projectId || "unconfigured",
   dataset: env.dataset || "production",
   apiVersion: env.apiVersion,
   useCdn: true,
