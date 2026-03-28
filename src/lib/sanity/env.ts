@@ -1,19 +1,29 @@
 /**
  * Validated Sanity environment variables.
  *
- * Hard-throws at startup if a variable is not defined at all in the
- * environment (undefined). Empty-string values are allowed during
- * local development before a Sanity project has been created — the
- * Studio will surface its own configuration UI in that case.
+ * In production: throws at startup if a required variable is missing so
+ * misconfigured deployments fail fast with a clear error.
+ *
+ * In development: logs a warning and returns an empty string so the dev
+ * server starts and the Studio loads even before a Sanity project is
+ * configured. The `isSanityConfigured` flag in client.ts prevents any
+ * actual fetch from being attempted when values are absent.
  */
 
 function requireEnv(name: string): string {
   const value = process.env[name]
   if (value === undefined) {
-    throw new Error(
-      `Missing environment variable: ${name}\n` +
-        `Copy .env.example to .env.local and set the value.`
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        `Missing environment variable: ${name}\n` +
+          `Set this variable in your Vercel project settings.`
+      )
+    }
+    console.warn(
+      `[sanity] Missing environment variable: ${name}\n` +
+        `Copy .env.example to .env.local and fill in the value.`
     )
+    return ""
   }
   return value
 }
