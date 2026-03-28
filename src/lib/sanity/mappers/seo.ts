@@ -9,6 +9,12 @@ interface BuildMetadataDefaults {
   description?: string
   /** Site-wide settings for final fallbacks */
   siteSettings?: SiteSettingsData | null
+  /** URL path for canonical construction, e.g. "/services/plumbing" */
+  path?: string
+  /** OpenGraph page type (default: "website") */
+  type?: "website" | "article"
+  /** ISO date string for article publishedTime */
+  publishedAt?: string
 }
 
 /**
@@ -21,40 +27,69 @@ interface BuildMetadataDefaults {
  */
 export function buildMetadata(
   seo: SeoData | null | undefined,
-  { title, description, siteSettings }: BuildMetadataDefaults
+  {
+    title,
+    description,
+    siteSettings,
+    path,
+    type = "website",
+    publishedAt,
+  }: BuildMetadataDefaults
 ): Metadata {
   const siteName = siteSettings?.businessName ?? ""
   const siteDefaultSeo = siteSettings?.defaultSeo
+  const baseUrl =
+    siteSettings?.canonicalUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? ""
 
+  // ── Resolved text values ──────────────────────────────────────────────────
   const resolvedTitle = seo?.metaTitle ?? title
   const resolvedDescription =
     seo?.metaDescription ?? description ?? siteDefaultSeo?.metaDescription ?? ""
 
+  // ── Title formatting ──────────────────────────────────────────────────────
+  const template = siteSettings?.defaultSeoTitleTemplate
+  const formatTitle = (t: string) =>
+    template ? template.replace("%s", t) : siteName ? `${t} | ${siteName}` : t
+
+  // ── OG values ─────────────────────────────────────────────────────────────
   const ogTitle = seo?.ogTitle ?? seo?.metaTitle ?? title
-  const ogDescription =
-    seo?.ogDescription ?? seo?.metaDescription ?? resolvedDescription
+  const ogDescription = seo?.ogDescription ?? seo?.metaDescription ?? resolvedDescription
 
   const ogImageSrc = seo?.ogImage ?? siteDefaultSeo?.ogImage
   const ogImageUrl = ogImageSrc
     ? urlFor(ogImageSrc).width(1200).height(630).auto("format").url()
     : undefined
 
+  // ── Robots ────────────────────────────────────────────────────────────────
   const robotsIndex = seo?.robotsIndex ?? siteDefaultSeo?.robotsIndex ?? true
   const robotsFollow = seo?.robotsFollow ?? siteDefaultSeo?.robotsFollow ?? true
 
+  // ── Canonical URL ─────────────────────────────────────────────────────────
+  const canonicalUrl =
+    seo?.canonicalUrl ?? (path !== undefined ? `${baseUrl}${path}` : undefined)
+
   return {
-    title: siteName ? `${resolvedTitle} | ${siteName}` : resolvedTitle,
-    description: resolvedDescription,
-    ...(seo?.canonicalUrl && {
-      alternates: { canonical: seo.canonicalUrl },
+    title: formatTitle(resolvedTitle),
+    description: resolvedDescription || undefined,
+    ...(canonicalUrl && {
+      alternates: { canonical: canonicalUrl },
     }),
     openGraph: {
-      title: siteName ? `${ogTitle} | ${siteName}` : ogTitle,
-      description: ogDescription,
+      title: formatTitle(ogTitle),
+      description: ogDescription || undefined,
       siteName: siteName || undefined,
-      ...(ogImageUrl && {
-        images: [{ url: ogImageUrl, width: 1200, height: 630 }],
-      }),
+      type,
+      ...(type === "article" && publishedAt ? { publishedTime: publishedAt } : {}),
+      ...(canonicalUrl ? { url: canonicalUrl } : {}),
+      ...(ogImageUrl
+        ? { images: [{ url: ogImageUrl, width: 1200, height: 630 }] }
+        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: formatTitle(ogTitle),
+      description: ogDescription || undefined,
+      ...(ogImageUrl ? { images: [ogImageUrl] } : {}),
     },
     robots: {
       index: robotsIndex,

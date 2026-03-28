@@ -1,12 +1,18 @@
 import { createClient } from "next-sanity"
 import { env } from "./env"
 
+// Fall back to a dummy value so createClient doesn't throw at module evaluation
+// time when NEXT_PUBLIC_SANITY_PROJECT_ID is not yet set. Actual fetches will
+// fail gracefully; every page wraps fetches in try/catch with fallback content.
 const sharedConfig = {
-  projectId: env.projectId,
-  dataset: env.dataset,
+  projectId: env.projectId || "__unconfigured__",
+  dataset: env.dataset || "production",
   apiVersion: env.apiVersion,
   useCdn: true,
 } as const
+
+/** True when Sanity is fully configured — use to short-circuit fetches. */
+export const isSanityConfigured = !!env.projectId && !!env.dataset
 
 /**
  * Public client — no token, CDN-cached, for published content only.

@@ -46,6 +46,10 @@ export interface SiteSettingsData {
   darkLogo?: ImageWithAltData
   favicon?: SanityImage
   defaultSeo?: SeoData
+  /** Base URL for the site, e.g. https://example.com (no trailing slash) */
+  canonicalUrl?: string
+  /** Title template for SEO, e.g. "%s | My Business". Falls back to "${title} | ${businessName}". */
+  defaultSeoTitleTemplate?: string
   businessHours?: BusinessHoursData[]
   socialLinks?: SocialLinks
   trackingIds?: TrackingIds

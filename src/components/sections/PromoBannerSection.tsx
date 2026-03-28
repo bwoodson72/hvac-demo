@@ -1,16 +1,27 @@
-import { Section } from "@/components/shared/Section"
 import { Container } from "@/components/shared/Container"
+import { CTAButton } from "@/components/shared/CTAButton"
+import { cn } from "@/lib/utils"
 import type { PromoBannerSectionData } from "@/lib/sanity/types"
 
+const styleMap: Record<PromoBannerSectionData["style"], string> = {
+  default: "bg-muted text-foreground",
+  accent: "bg-accent text-accent-foreground",
+  warning: "bg-warning text-warning-foreground",
+}
+
 export function PromoBannerSection({ data }: { data: PromoBannerSectionData }) {
+  const { text, cta, style } = data
+
   return (
-    <Section spacing="sm">
+    <div className={cn("py-3", styleMap[style])}>
       <Container>
-        <div className="rounded-lg border border-dashed border-border bg-muted/30 p-4 text-center">
-          <p className="text-sm text-muted-foreground">promoBannerSection · {data.style}</p>
-          <p className="mt-1 font-medium">{data.text}</p>
+        <div className="flex flex-col items-center justify-center gap-3 text-center sm:flex-row sm:text-left">
+          <p className="text-sm font-medium">{text}</p>
+          {cta && (
+            <CTAButton link={cta} variant="outline" size="default" className="shrink-0 text-xs" />
+          )}
         </div>
       </Container>
-    </Section>
+    </div>
   )
 }

@@ -21,6 +21,8 @@ export const siteSettingsQuery = groq`
     darkLogo{${imageWithAltFragment}},
     favicon,
     defaultSeo{${seoFragment}},
+    canonicalUrl,
+    defaultSeoTitleTemplate,
     businessHours[]{_key, day, opens, closes, isClosed},
     socialLinks,
     trackingIds

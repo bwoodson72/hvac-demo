@@ -1,0 +1,62 @@
+import type { LucideIcon } from "lucide-react"
+import {
+  ArrowRight,
+  Award,
+  BadgeCheck,
+  Check,
+  ChevronRight,
+  CircleCheck,
+  Clock,
+  Droplet,
+  Droplets,
+  Flame,
+  House,
+  Leaf,
+  Mail,
+  MapPin,
+  Paintbrush,
+  Phone,
+  Shield,
+  Sparkles,
+  Star,
+  ThumbsUp,
+  Trophy,
+  Truck,
+  Users,
+  Wrench,
+  Zap,
+} from "lucide-react"
+
+const ICON_MAP: Record<string, LucideIcon> = {
+  arrowRight: ArrowRight,
+  award: Award,
+  badgeCheck: BadgeCheck,
+  check: Check,
+  chevronRight: ChevronRight,
+  circleCheck: CircleCheck,
+  clock: Clock,
+  droplet: Droplet,
+  droplets: Droplets,
+  flame: Flame,
+  home: House,
+  house: House,
+  leaf: Leaf,
+  mail: Mail,
+  mapPin: MapPin,
+  paintbrush: Paintbrush,
+  phone: Phone,
+  shield: Shield,
+  sparkles: Sparkles,
+  star: Star,
+  thumbsUp: ThumbsUp,
+  trophy: Trophy,
+  truck: Truck,
+  users: Users,
+  wrench: Wrench,
+  zap: Zap,
+}
+
+/** Returns the Lucide icon component for the given string key, or null. */
+export function getIcon(key: string): LucideIcon | null {
+  return ICON_MAP[key] ?? null
+}
