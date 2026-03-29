@@ -1,5 +1,6 @@
 import { createClient } from "next-sanity"
 import { env } from "./env"
+import { serverEnv } from "./env.server"
 
 // Fall back to a dummy value so createClient doesn't throw at module evaluation
 // time when NEXT_PUBLIC_SANITY_PROJECT_ID is not yet set. Actual fetches will
@@ -28,7 +29,7 @@ export const sanityClient = createClient(sharedConfig)
 export const sanityClientWithToken = createClient({
   ...sharedConfig,
   useCdn: false, // bypass CDN so drafts are always fresh
-  token: env.readToken,
+  token: serverEnv.readToken,
 })
 
 /**

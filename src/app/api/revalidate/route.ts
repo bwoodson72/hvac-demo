@@ -13,10 +13,11 @@
  */
 import { revalidateTag } from "next/cache"
 import { type NextRequest, NextResponse } from "next/server"
+import { serverEnv } from "@/lib/sanity/env.server"
 
 export async function POST(req: NextRequest) {
   const secret = req.headers.get("sanity-webhook-secret")
-  const expectedSecret = process.env.SANITY_REVALIDATION_SECRET
+  const expectedSecret = serverEnv.revalidationSecret
 
   if (!expectedSecret) {
     // If no secret is configured, reject all requests — don't silently accept.

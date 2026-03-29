@@ -8,7 +8,7 @@
  */
 import { defineLive } from "next-sanity/live"
 import { sanityClientWithToken } from "./client"
-import { env } from "./env"
+import { serverEnv } from "./env.server"
 
 export const { sanityFetch, SanityLive } = defineLive({
   client: sanityClientWithToken,
@@ -16,12 +16,12 @@ export const { sanityFetch, SanityLive } = defineLive({
    * Server-only token — never exposed to the browser. Enables draft perspective
    * when Next.js draft mode cookie is present.
    */
-  serverToken: env.readToken,
+  serverToken: serverEnv.readToken,
   /**
    * Browser token — sent to the client for the LiveEvents connection so that
    * standalone previews (outside Presentation Tool) stay live.
    * Using the same read token is safe: it only grants query access to
    * published documents.
    */
-  browserToken: env.readToken,
+  browserToken: serverEnv.readToken,
 })
