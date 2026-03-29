@@ -1,4 +1,5 @@
 import type { StructureResolver } from "sanity/structure"
+import { env } from "@/lib/sanity/env"
 import {
   CogIcon,
   MenuIcon,
@@ -32,7 +33,7 @@ export const structure: StructureResolver = (S) =>
       S.listItem()
         .title("Pages")
         .icon(DocumentsIcon)
-        .child(S.documentList().title("Pages").filter('_type == "page"')),
+        .child(S.documentList().title("Pages").apiVersion(env.apiVersion).filter('_type == "page"')),
 
       S.listItem()
         .title("Services")
@@ -40,6 +41,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Services")
+            .apiVersion(env.apiVersion)
             .filter('_type == "service"')
             .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
         ),
@@ -50,6 +52,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Service Areas")
+            .apiVersion(env.apiVersion)
             .filter('_type == "serviceArea"')
             .defaultOrdering([{ field: "title", direction: "asc" }])
         ),
@@ -63,6 +66,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Testimonials")
+            .apiVersion(env.apiVersion)
             .filter('_type == "testimonial"')
             .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
         ),
@@ -73,6 +77,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("FAQs")
+            .apiVersion(env.apiVersion)
             .filter('_type == "faq"')
             .defaultOrdering([
               { field: "category", direction: "asc" },
@@ -86,6 +91,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Team")
+            .apiVersion(env.apiVersion)
             .filter('_type == "teamMember"')
             .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
         ),
@@ -96,6 +102,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Projects")
+            .apiVersion(env.apiVersion)
             .filter('_type == "project"')
             .defaultOrdering([{ field: "displayOrder", direction: "asc" }])
         ),
@@ -106,6 +113,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Blog posts")
+            .apiVersion(env.apiVersion)
             .filter('_type == "post"')
             .defaultOrdering([{ field: "publishedAt", direction: "desc" }])
         ),
@@ -116,6 +124,7 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title("Offers")
+            .apiVersion(env.apiVersion)
             .filter('_type == "offer"')
             .defaultOrdering([{ field: "_createdAt", direction: "desc" }])
         ),
