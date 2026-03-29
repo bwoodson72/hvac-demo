@@ -11,6 +11,7 @@ export const sanityConfig = defineConfig({
   projectId: env.projectId,
   dataset: env.dataset,
   apiVersion: env.apiVersion,
+  basePath: "/studio",
 
   title: "Service Template Studio",
 
