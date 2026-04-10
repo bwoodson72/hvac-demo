@@ -1,6 +1,6 @@
 "use client"
 
-import { MenuIcon } from "lucide-react"
+import { MenuIcon, Phone } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -17,9 +17,10 @@ interface MobileMenuProps {
   businessName: string
   navLinks?: LinkData[]
   ctaButton?: LinkData
+  phone?: string
 }
 
-export function MobileMenu({ businessName, navLinks, ctaButton }: MobileMenuProps) {
+export function MobileMenu({ businessName, navLinks, ctaButton, phone }: MobileMenuProps) {
   const cta = ctaButton ? resolveLink(ctaButton) : null
 
   return (
@@ -49,13 +50,24 @@ export function MobileMenu({ businessName, navLinks, ctaButton }: MobileMenuProp
             )
           })}
         </nav>
-        {cta && (
-          <div className="border-t px-4 py-4">
-            <Button asChild className="w-full">
-              <Link href={cta.href} target={cta.target} rel={cta.rel}>
-                {cta.label}
-              </Link>
-            </Button>
+        {(cta || phone) && (
+          <div className="border-t px-4 py-4 flex flex-col gap-3">
+            {phone && (
+              <a
+                href={`tel:${phone}`}
+                className="flex items-center gap-2 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+              >
+                <Phone className="size-4 shrink-0" aria-hidden />
+                {phone}
+              </a>
+            )}
+            {cta && (
+              <Button asChild className="w-full">
+                <Link href={cta.href} target={cta.target} rel={cta.rel}>
+                  {cta.label}
+                </Link>
+              </Button>
+            )}
           </div>
         )}
       </SheetContent>

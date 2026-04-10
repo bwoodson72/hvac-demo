@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CMSImage } from "@/components/shared/CMSImage"
 import { resolveLink } from "@/lib/sanity/mappers/links"
@@ -9,9 +10,10 @@ interface SiteHeaderProps {
   data: HeaderSettingsData | null
   businessName?: string
   logo?: ImageWithAltData | null
+  phone?: string
 }
 
-export function SiteHeader({ data, businessName = "Home", logo }: SiteHeaderProps) {
+export function SiteHeader({ data, businessName = "Home", logo, phone }: SiteHeaderProps) {
   const navLinks = data?.navLinks ?? []
   const cta = data?.ctaButton ? resolveLink(data.ctaButton) : null
 
@@ -39,7 +41,7 @@ export function SiteHeader({ data, businessName = "Home", logo }: SiteHeaderProp
         {/* Logo / business name */}
         <Link href="/" className="flex items-center gap-2 font-bold text-lg shrink-0">
           {logo
-            ? <CMSImage image={logo} slot="logo" priority className="h-10 w-auto object-contain" />
+            ? <CMSImage image={logo} slot="logo" priority className="h-32 w-auto object-contain" />
             : businessName}
         </Link>
 
@@ -65,6 +67,15 @@ export function SiteHeader({ data, businessName = "Home", logo }: SiteHeaderProp
 
         {/* Desktop CTA + mobile hamburger */}
         <div className="flex items-center gap-2">
+          {data?.showPhoneInHeader !== false && phone && (
+            <a
+              href={`tel:${phone}`}
+              className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+            >
+              <Phone className="size-4 shrink-0" aria-hidden />
+              {phone}
+            </a>
+          )}
           {cta && (
             <Button asChild className="hidden md:inline-flex">
               <Link href={cta.href} target={cta.target} rel={cta.rel}>
@@ -76,6 +87,7 @@ export function SiteHeader({ data, businessName = "Home", logo }: SiteHeaderProp
             businessName={businessName}
             navLinks={navLinks}
             ctaButton={data?.ctaButton}
+            phone={phone}
           />
         </div>
       </div>
