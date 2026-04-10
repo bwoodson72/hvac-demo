@@ -26,7 +26,12 @@ export const siteSettingsQuery = groq`
     businessHours[]{_key, day, opens, closes, isClosed},
     socialLinks,
     trackingIds,
-    branding{ primaryColor, primaryForeground, secondaryColor, secondaryForeground }
+    branding{
+      primaryColor{ hex },
+      primaryForeground{ hex },
+      secondaryColor{ hex },
+      secondaryForeground{ hex }
+    }
   }
 `
 

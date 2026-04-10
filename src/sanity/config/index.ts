@@ -2,6 +2,7 @@ import { defineConfig } from "sanity"
 import { structureTool } from "sanity/structure"
 import { presentationTool } from "sanity/presentation"
 import { visionTool } from "@sanity/vision"
+import { colorInput } from "@sanity/color-input"
 import { env } from "@/lib/sanity/env"
 import { schemaTypes } from "../schemaTypes"
 import { structure } from "../structure"
@@ -36,6 +37,7 @@ export const sanityConfig = defineConfig({
       },
     }),
     visionTool({ defaultApiVersion: env.apiVersion }),
+    colorInput(),
   ],
 
   schema: {

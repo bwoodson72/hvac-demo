@@ -36,10 +36,10 @@ export interface BusinessAddress {
 }
 
 export interface BrandingData {
-  primaryColor?: string
-  primaryForeground?: string
-  secondaryColor?: string
-  secondaryForeground?: string
+  primaryColor?: { hex?: string }
+  primaryForeground?: { hex?: string }
+  secondaryColor?: { hex?: string }
+  secondaryForeground?: { hex?: string }
 }
 
 export interface SiteSettingsData {
