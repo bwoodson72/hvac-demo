@@ -36,9 +36,9 @@ export default async function MarketingLayout({ children }: { children: React.Re
       {siteSettings && <JsonLd data={generateLocalBusinessSchema(siteSettings)} />}
       <BrandStyles settings={siteSettings} />
       <DraftBanner />
-      <SiteHeader data={headerSettings} businessName={businessName} logo={headerSettings?.logo} phone={siteSettings?.phone} />
+      <SiteHeader data={headerSettings} businessName={businessName} logo={headerSettings?.logo ?? siteSettings?.logo} phone={siteSettings?.phone} />
       {children}
-      <SiteFooter data={footerSettings} businessName={businessName} />
+      <SiteFooter data={footerSettings} businessName={businessName} logo={footerSettings?.logo ?? siteSettings?.logo} socialLinks={siteSettings?.socialLinks ?? undefined} />
       <SanityLive />
       {isDraftMode && <VisualEditing />}
     </>

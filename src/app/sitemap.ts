@@ -4,7 +4,6 @@ import {
   getSiteSettings,
   getAllServices,
   getAllServiceAreas,
-  getAllPosts,
 } from "@/lib/sanity/queries"
 
 const STATIC_ROUTES = [
@@ -46,10 +45,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (!isSanityConfigured) return staticEntries
 
-  const [services, serviceAreas, posts] = await Promise.allSettled([
+  const [services, serviceAreas] = await Promise.allSettled([
     getAllServices(),
     getAllServiceAreas(),
-    getAllPosts(),
   ])
 
   const serviceEntries: MetadataRoute.Sitemap =
@@ -72,15 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }))
       : []
 
-  const postEntries: MetadataRoute.Sitemap =
-    posts.status === "fulfilled"
-      ? posts.value.map((p) => ({
-          url: `${baseUrl}/blog/${p.slug}`,
-          lastModified: p.publishedAt ? new Date(p.publishedAt) : now,
-          changeFrequency: "monthly" as const,
-          priority: 0.6,
-        }))
-      : []
+  // Blog entries added here when blog feature is enabled (see enableBlog in siteSettings)
 
-  return [...staticEntries, ...serviceEntries, ...areaEntries, ...postEntries]
+  return [...staticEntries, ...serviceEntries, ...areaEntries]
 }

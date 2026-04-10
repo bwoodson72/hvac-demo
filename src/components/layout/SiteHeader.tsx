@@ -70,7 +70,7 @@ export function SiteHeader({ data, businessName = "Home", logo, phone }: SiteHea
           {data?.showPhoneInHeader !== false && phone && (
             <a
               href={`tel:${phone}`}
-              className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary transition-colors"
+              className="hidden md:flex items-center gap-2 text-sm font-semibold text-foreground hover:text-primary transition-colors"
             >
               <Phone className="size-4 shrink-0" aria-hidden />
               {phone}

@@ -1,37 +1,65 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
+import "./globals.css"
+import { getSiteSettings } from "@/lib/sanity/queries"
+import { isSanityConfigured } from "@/lib/sanity/client"
+import { urlFor } from "@/lib/sanity/image"
+import { TrackingScripts } from "@/components/shared/TrackingScripts"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
+})
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
+})
 
-export const metadata: Metadata = {
-  title: {
-    default: "Home",
-    template: "%s",
-  },
-  description: "",
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    if (!isSanityConfigured) throw new Error("Sanity not configured")
+    const settings = await getSiteSettings()
+    const faviconUrl = settings?.favicon?.asset
+      ? urlFor(settings.favicon).width(512).height(512).url()
+      : undefined
+    return {
+      title: { default: settings?.businessName ?? "Home", template: "%s" },
+      description: "",
+      robots: { index: true, follow: true },
+      ...(faviconUrl ? { icons: { icon: faviconUrl, apple: faviconUrl } } : {}),
+    }
+  } catch {
+    return {
+      title: { default: "Home", template: "%s" },
+      description: "",
+      robots: { index: true, follow: true },
+    }
+  }
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  let trackingIds = undefined
+  try {
+    if (isSanityConfigured) {
+      const settings = await getSiteSettings()
+      trackingIds = settings?.trackingIds
+    }
+  } catch {
+    // tracking unavailable — skip scripts
+  }
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <TrackingScripts trackingIds={trackingIds} />
+        {children}
+      </body>
     </html>
-  );
+  )
 }

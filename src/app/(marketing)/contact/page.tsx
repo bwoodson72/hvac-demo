@@ -45,16 +45,25 @@ export default async function ContactPage() {
   let heroTitle = "Get in Touch"
   let heroSubtitle: string | undefined
   let serviceAreaRefs: ServiceAreaRef[] = []
+  let phone: string | undefined
+  let email: string | undefined
+  let address: { street?: string; city?: string; state?: string; zip?: string } | undefined
+  let businessHours: Array<{ _key: string; day: string; opens: string; closes: string; isClosed: boolean }> | undefined
 
   if (isSanityConfigured) {
     try {
-      const [page, areas] = await Promise.all([
+      const [page, areas, siteSettings] = await Promise.all([
         getPageBySlug("contact"),
         getAllServiceAreas(),
+        getSiteSettings(),
       ])
       if (page?.hero?.title) heroTitle = page.hero.title
       if (page?.hero?.subtitle) heroSubtitle = page.hero.subtitle
       serviceAreaRefs = areas.map(toRef)
+      phone = siteSettings?.phone ?? undefined
+      email = siteSettings?.email ?? undefined
+      address = siteSettings?.address ?? undefined
+      businessHours = siteSettings?.businessHours as typeof businessHours ?? undefined
     } catch {
       // use defaults
     }
@@ -85,6 +94,10 @@ export default async function ContactPage() {
           showEmail: true,
           showAddress: true,
           showHours: true,
+          phone,
+          email,
+          address,
+          businessHours,
         }}
       />
 

@@ -58,6 +58,21 @@ export const heroSection = defineType({
       ],
     }),
     defineField({
+      name: "backgroundStyle",
+      title: "Background style",
+      type: "string",
+      description: "Applies when no image is set. Ignored for centered heroes with a background image.",
+      options: {
+        list: [
+          { title: "Light", value: "light" },
+          { title: "Dark", value: "dark" },
+          { title: "Primary", value: "primary" },
+          { title: "Muted", value: "muted" },
+        ],
+        layout: "radio",
+      },
+    }),
+    defineField({
       name: "variant",
       title: "Layout variant",
       type: "string",

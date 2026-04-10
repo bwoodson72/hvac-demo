@@ -3,7 +3,7 @@ import { SectionRenderer } from "@/components/page-templates/SectionRenderer"
 import { getHomepage, getSiteSettings } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
-import type { SectionData } from "@/lib/sanity/types"
+import type { SectionData, SiteSettingsData } from "@/lib/sanity/types"
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
 
@@ -63,11 +63,18 @@ const FALLBACK_SECTIONS: SectionData[] = [
 
 export default async function HomePage() {
   let sections: SectionData[] | undefined
+  let siteContext: { phone?: string; email?: string; address?: SiteSettingsData["address"]; businessHours?: SiteSettingsData["businessHours"] } | undefined
 
   if (isSanityConfigured) {
     try {
-      const homepage = await getHomepage()
+      const [homepage, settings] = await Promise.all([getHomepage(), getSiteSettings()])
       sections = homepage?.sections
+      siteContext = {
+        phone: settings?.phone ?? undefined,
+        email: settings?.email ?? undefined,
+        address: settings?.address ?? undefined,
+        businessHours: settings?.businessHours ?? undefined,
+      }
     } catch {
       // Sanity configured but unreachable — use fallback
     }
@@ -85,7 +92,7 @@ export default async function HomePage() {
           <code className="font-mono">.env.local</code>.
         </div>
       )}
-      <SectionRenderer sections={renderSections} />
+      <SectionRenderer sections={renderSections} siteContext={siteContext} />
     </main>
   )
 }

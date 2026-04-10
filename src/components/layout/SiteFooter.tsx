@@ -1,28 +1,61 @@
 import Link from "next/link"
+import { CMSImage } from "@/components/shared/CMSImage"
 import { resolveLink } from "@/lib/sanity/mappers/links"
-import type { FooterSettingsData } from "@/lib/sanity/types"
+import type { FooterSettingsData, ImageWithAltData, SocialLinks } from "@/lib/sanity/types"
 
 interface SiteFooterProps {
   data: FooterSettingsData | null
   businessName?: string
+  logo?: ImageWithAltData | null
+  socialLinks?: SocialLinks
 }
 
-export function SiteFooter({ data, businessName = "Home" }: SiteFooterProps) {
+export function SiteFooter({ data, businessName = "Home", logo, socialLinks }: SiteFooterProps) {
   const year = new Date().getFullYear()
   const copyright = data?.copyrightText ?? `© ${year} ${businessName}. All rights reserved.`
   const navColumns = data?.navColumns ?? []
   const bottomLinks = data?.bottomLinks ?? []
+  const showSocial = data?.showSocialLinks && socialLinks && Object.values(socialLinks).some(Boolean)
 
   return (
     <footer className="border-t bg-muted/40">
-      {(navColumns.length > 0 || data?.tagline) && (
+      {(navColumns.length > 0 || data?.tagline || logo || showSocial) && (
         <div className="container mx-auto px-4 sm:px-6 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Brand column */}
             <div className="flex flex-col gap-3">
-              <span className="font-bold text-lg">{businessName}</span>
+              {logo
+                ? <CMSImage image={logo} slot="logo" className="h-10 w-auto" />
+                : <span className="font-bold text-lg">{businessName}</span>}
               {data?.tagline && (
                 <p className="text-sm text-muted-foreground">{data.tagline}</p>
+              )}
+              {showSocial && (
+                <div className="flex flex-wrap gap-3 mt-1">
+                  {(
+                    [
+                      ["facebook", "Facebook"],
+                      ["instagram", "Instagram"],
+                      ["twitter", "X"],
+                      ["youtube", "YouTube"],
+                      ["linkedin", "LinkedIn"],
+                      ["yelp", "Yelp"],
+                      ["googleBusiness", "Google"],
+                    ] as const
+                  ).map(([key, label]) =>
+                    socialLinks![key] ? (
+                      <a
+                        key={key}
+                        href={socialLinks![key]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {label}
+                      </a>
+                    ) : null
+                  )}
+                </div>
               )}
             </div>
 

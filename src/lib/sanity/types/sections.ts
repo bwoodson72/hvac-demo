@@ -70,6 +70,7 @@ export interface ProjectRef {
   title: string
   slug?: string
   category?: string
+  beforeImage?: ImageWithAltData
   afterImage?: ImageWithAltData
 }
 
@@ -104,6 +105,7 @@ export interface HeroSectionData {
   image?: ImageWithAltData
   trustItems?: TrustItem[]
   variant: "centered" | "split" | "imageRight" | "compact"
+  backgroundStyle?: "light" | "dark" | "primary" | "muted"
 }
 
 export interface TrustBarSectionData {
@@ -212,6 +214,21 @@ export interface ContactSectionData {
   showEmail: boolean
   showAddress: boolean
   showHours: boolean
+  phone?: string
+  email?: string
+  address?: {
+    street?: string
+    city?: string
+    state?: string
+    zip?: string
+  }
+  businessHours?: Array<{
+    _key: string
+    day: string
+    opens: string
+    closes: string
+    isClosed: boolean
+  }>
 }
 
 export interface StatsSectionData {

@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react"
 import { HeroSection } from "@/components/sections/HeroSection"
 import { ContentSection } from "@/components/sections/ContentSection"
 import { ServicesGridSection } from "@/components/sections/ServicesGridSection"
@@ -10,7 +11,6 @@ import { Container } from "@/components/shared/Container"
 import { Heading } from "@/components/shared/Heading"
 import { Badge } from "@/components/ui/badge"
 import type { ServiceAreaData, ServiceRef, FaqRef } from "@/lib/sanity/types"
-import type { PortableTextBlock } from "next-sanity"
 
 // ── Conversion helpers ────────────────────────────────────────────────────────
 
@@ -32,18 +32,6 @@ function toFaqRef(f: NonNullable<ServiceAreaData["faqs"]>[number]): FaqRef {
     answer: f.answer,
     category: f.category,
   }
-}
-
-function textToPortableText(text: string): PortableTextBlock[] {
-  return [
-    {
-      _type: "block",
-      _key: "pt-1",
-      style: "normal",
-      children: [{ _type: "span", _key: "pt-s1", text, marks: [] }],
-      markDefs: [],
-    },
-  ]
 }
 
 // ── Template ──────────────────────────────────────────────────────────────────
@@ -83,7 +71,35 @@ export function ServiceAreaPage({ serviceArea }: ServiceAreaPageProps) {
         />
       )}
 
-      {/* 3. Available services */}
+      {/* 3. Neighborhoods + serviceAreaProof callout */}
+      {(serviceArea.neighborhoods?.length || serviceArea.serviceAreaProof) && (
+        <Section spacing="sm">
+          <Container>
+            {serviceArea.neighborhoods && serviceArea.neighborhoods.length > 0 && (
+              <>
+                <Heading as="h2" size="h3" className="mb-4">
+                  Areas We Serve in {locationLabel}
+                </Heading>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {serviceArea.neighborhoods.map((n) => (
+                    <Badge key={n} variant="outline">{n}</Badge>
+                  ))}
+                </div>
+              </>
+            )}
+            {serviceArea.serviceAreaProof && (
+              <div className={`rounded-xl border border-primary/20 bg-primary/5 px-6 py-4${serviceArea.neighborhoods?.length ? " mt-6" : ""}`}>
+                <p className="flex items-start gap-2 text-muted-foreground">
+                  <MapPin className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
+                  {serviceArea.serviceAreaProof}
+                </p>
+              </div>
+            )}
+          </Container>
+        </Section>
+      )}
+
+      {/* 4. Available services */}
       {serviceArea.relatedServices && serviceArea.relatedServices.length > 0 && (
         <ServicesGridSection
           data={{
@@ -96,37 +112,6 @@ export function ServiceAreaPage({ serviceArea }: ServiceAreaPageProps) {
             selectedServices: serviceArea.relatedServices.map(toServiceRef),
           }}
         />
-      )}
-
-      {/* 4. Local proof content */}
-      {serviceArea.serviceAreaProof && (
-        <ContentSection
-          data={{
-            _type: "contentSection",
-            _key: "area-proof",
-            title: `Why Choose Us in ${serviceArea.city}`,
-            body: textToPortableText(serviceArea.serviceAreaProof),
-            layout: "default",
-          }}
-        />
-      )}
-
-      {/* 5. Neighborhoods */}
-      {serviceArea.neighborhoods && serviceArea.neighborhoods.length > 0 && (
-        <Section spacing="sm">
-          <Container>
-            <Heading as="h2" size="h3" className="mb-4">
-              Neighborhoods We Serve in {serviceArea.city}
-            </Heading>
-            <div className="flex flex-wrap gap-2">
-              {serviceArea.neighborhoods.map((n) => (
-                <Badge key={n} variant="secondary">
-                  {n}
-                </Badge>
-              ))}
-            </div>
-          </Container>
-        </Section>
       )}
 
       {/* 6. Custom CMS sections */}

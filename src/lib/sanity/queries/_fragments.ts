@@ -75,7 +75,8 @@ const projectRefFragment = groq`
   title,
   "slug": slug.current,
   category,
-  afterImage{${imageWithAltFragment}}
+  afterImage{${imageWithAltFragment}},
+  beforeImage{${imageWithAltFragment}}
 `
 
 const serviceAreaRefFragment = groq`
@@ -118,6 +119,7 @@ export const sectionsFragment = groq`
     image{${imageWithAltFragment}},
     trustItems[]{_key, icon, label},
     "variant": coalesce(variant, "split"),
+    backgroundStyle,
 
     // ── TrustBarSection ─────────────────────────────────────────
     items[]{_key, icon, label, value},

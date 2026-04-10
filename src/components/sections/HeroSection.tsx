@@ -7,26 +7,52 @@ import { CTAButton } from "@/components/shared/CTAButton"
 import { getIcon } from "@/lib/utils/icons"
 import type { HeroSectionData } from "@/lib/sanity/types"
 
+// Maps backgroundStyle → "bg-X text-Y" Tailwind classes
+const BG_MAP: Record<NonNullable<HeroSectionData["backgroundStyle"]>, string> = {
+  light:   "bg-background text-foreground",
+  dark:    "bg-foreground text-background",
+  primary: "bg-primary text-primary-foreground",
+  muted:   "bg-muted text-foreground",
+}
+
+// True when the background is dark and text should use opacity variants of current colour
+function isDarkStyle(s: HeroSectionData["backgroundStyle"] | undefined): boolean {
+  return s === "dark" || s === "primary" || s === undefined
+}
+
 export function HeroSection({ data }: { data: HeroSectionData }) {
-  const { variant, eyebrow, title, subtitle, body, primaryCta, secondaryCta, image, trustItems } =
-    data
+  const {
+    variant, eyebrow, title, subtitle, body,
+    primaryCta, secondaryCta, image, trustItems, backgroundStyle,
+  } = data
+
+  const bgClass = backgroundStyle ? BG_MAP[backgroundStyle] : undefined
+  const dark = isDarkStyle(backgroundStyle)
+
+  // Text colour helpers for no-image contexts
+  const eyebrowTx  = dark ? "text-current/70" : "text-primary"
+  const subtitleTx = dark ? "text-current/80" : "text-muted-foreground"
+  const bodyTx     = dark ? "text-current/70" : "text-muted-foreground"
+
+  // ── compact ────────────────────────────────────────────────────────────────
 
   if (variant === "compact") {
     return (
       <section
         aria-label={title}
-        className="py-[var(--section-spacing-sm)] border-b border-border"
+        className={cn(
+          "py-[var(--section-spacing-sm)] border-b border-border",
+          bgClass
+        )}
       >
         <Container>
           {eyebrow && (
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className={cn("mb-2 text-sm font-semibold uppercase tracking-widest", eyebrowTx)}>
               {eyebrow}
             </p>
           )}
-          <Heading as="h1" size="h2">
-            {title}
-          </Heading>
-          {subtitle && <p className="mt-3 text-lg text-muted-foreground">{subtitle}</p>}
+          <Heading as="h1" size="h2">{title}</Heading>
+          {subtitle && <p className={cn("mt-3 text-lg", subtitleTx)}>{subtitle}</p>}
           {(primaryCta || secondaryCta) && (
             <div className="mt-6 flex flex-wrap gap-3">
               {primaryCta && <CTAButton link={primaryCta} size="lg" />}
@@ -38,16 +64,18 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
     )
   }
 
+  // ── split / imageRight ─────────────────────────────────────────────────────
+
   if (variant === "split" || variant === "imageRight") {
     const imageWeight = variant === "imageRight" ? "lg:col-span-3" : "lg:col-span-1"
-    const textWeight = variant === "imageRight" ? "lg:col-span-2" : "lg:col-span-1"
+    const textWeight  = variant === "imageRight" ? "lg:col-span-2" : "lg:col-span-1"
 
     return (
       <section
         aria-label={title}
         className={cn(
           "min-h-[420px] py-[var(--section-spacing-lg)]",
-          !image && "bg-muted/40"
+          bgClass ?? (!image && "bg-muted/40")
         )}
       >
         <Container>
@@ -55,17 +83,15 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
             {/* Text column */}
             <div className={cn("flex flex-col", image ? textWeight : "lg:col-span-5")}>
               {eyebrow && (
-                <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+                <p className={cn("mb-3 text-sm font-semibold uppercase tracking-widest", eyebrowTx)}>
                   {eyebrow}
                 </p>
               )}
-              <Heading as="h1" size="display">
-                {title}
-              </Heading>
+              <Heading as="h1" size="display">{title}</Heading>
               {subtitle && (
-                <p className="mt-4 text-xl font-light text-muted-foreground">{subtitle}</p>
+                <p className={cn("mt-4 text-xl font-light", subtitleTx)}>{subtitle}</p>
               )}
-              {body && <p className="mt-4 leading-relaxed text-muted-foreground">{body}</p>}
+              {body && <p className={cn("mt-4 leading-relaxed", bodyTx)}>{body}</p>}
               {(primaryCta || secondaryCta) && (
                 <div className="mt-8 flex flex-wrap gap-3">
                   {primaryCta && <CTAButton link={primaryCta} size="lg" />}
@@ -87,14 +113,29 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
     )
   }
 
-  // centered (default) — always dark: either image+overlay or bg-foreground
+  // ── centered (default) ─────────────────────────────────────────────────────
+  // When a background image is present the overlay handles appearance;
+  // backgroundStyle is ignored in that case.
+
   const hasBackgroundImage = !!image
+  const centeredBg = hasBackgroundImage
+    ? undefined
+    : (bgClass ?? "bg-foreground text-background")
+
+  // For the no-image path: light/muted use standard colours; everything else is dark.
+  const centeredDark = hasBackgroundImage || isDarkStyle(backgroundStyle)
+  const cEyebrow  = hasBackgroundImage ? "text-white/80"  : centeredDark ? "text-current/70"  : "text-primary"
+  const cSubtitle = hasBackgroundImage ? "text-white/85"  : centeredDark ? "text-current/80"  : "text-muted-foreground"
+  const cBody     = hasBackgroundImage ? "text-white/75"  : centeredDark ? "text-current/70"  : "text-muted-foreground"
+  const cTrust    = hasBackgroundImage ? "text-white/80"  : centeredDark ? "text-current/70"  : undefined
+  const cHeading  = hasBackgroundImage ? "text-white"     : undefined
+
   return (
     <section
       aria-label={title}
       className={cn(
         "relative flex min-h-[480px] items-center overflow-hidden py-[var(--section-spacing-lg)]",
-        hasBackgroundImage ? undefined : "bg-foreground text-background"
+        centeredBg
       )}
     >
       {hasBackgroundImage && (
@@ -106,20 +147,18 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
 
       <Container className="relative z-10 flex flex-col items-center text-center">
         {eyebrow && (
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-white/80">
+          <p className={cn("mb-4 text-sm font-semibold uppercase tracking-widest", cEyebrow)}>
             {eyebrow}
           </p>
         )}
-        <Heading as="h1" size="display" className="text-white">
-          {title}
-        </Heading>
+        <Heading as="h1" size="display" className={cHeading}>{title}</Heading>
         {subtitle && (
-          <p className="mx-auto mt-5 max-w-2xl text-xl font-light text-white/85">
+          <p className={cn("mx-auto mt-5 max-w-2xl text-xl font-light", cSubtitle)}>
             {subtitle}
           </p>
         )}
         {body && (
-          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-white/75">
+          <p className={cn("mx-auto mt-4 max-w-xl leading-relaxed", cBody)}>
             {body}
           </p>
         )}
@@ -129,7 +168,10 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
             {secondaryCta && <CTAButton link={secondaryCta} variant="secondary" size="lg" />}
           </div>
         )}
-        <TrustItems items={trustItems} className="mt-8 justify-center text-white/80" />
+        <TrustItems
+          items={trustItems}
+          className={cn("mt-8 justify-center", cTrust)}
+        />
       </Container>
     </section>
   )

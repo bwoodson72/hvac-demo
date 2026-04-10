@@ -57,7 +57,7 @@ export interface HeroData {
   primaryCta?: LinkData
   secondaryCta?: LinkData
   image?: ImageWithAltData
-  backgroundStyle?: "default" | "dark" | "primary" | "image"
+  backgroundStyle?: "light" | "dark" | "primary" | "muted"
   variant?: "centered" | "split" | "imageRight" | "compact"
 }
 

@@ -6,8 +6,14 @@ import type { ContactSectionData } from "@/lib/sanity/types"
 import { ContactForm } from "./ContactForm"
 
 export function ContactSection({ data }: { data: ContactSectionData }) {
-  const { title, intro, formMode, showPhone, showEmail, showAddress, showHours } = data
-  const hasContactInfo = showPhone || showEmail || showAddress || showHours
+  const { title, intro, formMode, showPhone, showEmail, showAddress, showHours,
+    phone, email, address, businessHours } = data
+
+  const hasPhone = showPhone && !!phone
+  const hasEmail = showEmail && !!email
+  const hasAddress = showAddress && !!(address?.street || address?.city || address?.state || address?.zip)
+  const hasHours = showHours && !!businessHours?.length
+  const hasContactInfo = hasPhone || hasEmail || hasAddress || hasHours
 
   return (
     <Section>
@@ -33,41 +39,43 @@ export function ContactSection({ data }: { data: ContactSectionData }) {
           {hasContactInfo && (
             <aside className="flex flex-col gap-6 rounded-xl bg-muted/40 p-6 h-fit">
               <p className="font-heading text-base font-semibold">Contact Information</p>
-              {showPhone && (
+              {hasPhone && (
                 <InfoRow icon={<Phone className="size-4 text-primary" />} label="Phone">
                   <a
-                    href="tel:+15550001234"
+                    href={`tel:${phone}`}
                     className="text-sm hover:text-primary transition-colors"
                   >
-                    (555) 000-1234
+                    {phone}
                   </a>
                 </InfoRow>
               )}
-              {showEmail && (
+              {hasEmail && (
                 <InfoRow icon={<Mail className="size-4 text-primary" />} label="Email">
                   <a
-                    href="mailto:hello@example.com"
+                    href={`mailto:${email}`}
                     className="text-sm hover:text-primary transition-colors"
                   >
-                    hello@example.com
+                    {email}
                   </a>
                 </InfoRow>
               )}
-              {showAddress && (
+              {hasAddress && (
                 <InfoRow icon={<MapPin className="size-4 text-primary" />} label="Address">
                   <p className="text-sm text-muted-foreground">
-                    123 Main Street
-                    <br />
-                    Anytown, ST 00000
+                    {address?.street && <>{address.street}<br /></>}
+                    {[address?.city, address?.state].filter(Boolean).join(", ")}
+                    {address?.zip && ` ${address.zip}`}
                   </p>
                 </InfoRow>
               )}
-              {showHours && (
+              {hasHours && (
                 <InfoRow icon={<Clock className="size-4 text-primary" />} label="Hours">
                   <div className="text-sm text-muted-foreground space-y-0.5">
-                    <p>Mon–Fri: 8am – 6pm</p>
-                    <p>Sat: 9am – 2pm</p>
-                    <p>Sun: Closed</p>
+                    {businessHours!.map((h) => (
+                      <p key={h._key}>
+                        {h.day}: {h.isClosed ? "Closed" : `${h.opens} – ${h.closes}`}
+                      </p>
+                    ))}
                   </div>
                 </InfoRow>
               )}
