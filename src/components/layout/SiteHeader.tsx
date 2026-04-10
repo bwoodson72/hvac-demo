@@ -1,15 +1,17 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { CMSImage } from "@/components/shared/CMSImage"
 import { resolveLink } from "@/lib/sanity/mappers/links"
 import { MobileMenu } from "./MobileMenu"
-import type { HeaderSettingsData } from "@/lib/sanity/types"
+import type { HeaderSettingsData, ImageWithAltData } from "@/lib/sanity/types"
 
 interface SiteHeaderProps {
   data: HeaderSettingsData | null
   businessName?: string
+  logo?: ImageWithAltData | null
 }
 
-export function SiteHeader({ data, businessName = "Home" }: SiteHeaderProps) {
+export function SiteHeader({ data, businessName = "Home", logo }: SiteHeaderProps) {
   const navLinks = data?.navLinks ?? []
   const cta = data?.ctaButton ? resolveLink(data.ctaButton) : null
 
@@ -36,7 +38,9 @@ export function SiteHeader({ data, businessName = "Home" }: SiteHeaderProps) {
       <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4 sm:px-6">
         {/* Logo / business name */}
         <Link href="/" className="flex items-center gap-2 font-bold text-lg shrink-0">
-          {businessName}
+          {logo
+            ? <CMSImage image={logo} slot="logo" priority className="h-10 w-auto object-contain" />
+            : businessName}
         </Link>
 
         {/* Desktop nav */}
