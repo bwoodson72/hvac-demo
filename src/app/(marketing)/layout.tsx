@@ -8,6 +8,7 @@ import { VisualEditing } from "@/components/shared/VisualEditing"
 import { generateLocalBusinessSchema } from "@/lib/seo/jsonLd"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { SiteFooter } from "@/components/layout/SiteFooter"
+import { BrandStyles } from "@/components/shared/BrandStyles"
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled: isDraftMode } = await draftMode()
@@ -33,6 +34,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
   return (
     <>
       {siteSettings && <JsonLd data={generateLocalBusinessSchema(siteSettings)} />}
+      <BrandStyles settings={siteSettings} />
       <DraftBanner />
       <SiteHeader data={headerSettings} businessName={businessName} />
       {children}

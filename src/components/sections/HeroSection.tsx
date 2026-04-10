@@ -23,14 +23,14 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
               {eyebrow}
             </p>
           )}
-          <Heading as="h1" size="h1">
+          <Heading as="h1" size="h2">
             {title}
           </Heading>
-          {subtitle && <p className="mt-3 text-xl text-muted-foreground">{subtitle}</p>}
+          {subtitle && <p className="mt-3 text-lg text-muted-foreground">{subtitle}</p>}
           {(primaryCta || secondaryCta) && (
             <div className="mt-6 flex flex-wrap gap-3">
               {primaryCta && <CTAButton link={primaryCta} size="lg" />}
-              {secondaryCta && <CTAButton link={secondaryCta} variant="outline" size="lg" />}
+              {secondaryCta && <CTAButton link={secondaryCta} variant="secondary" size="lg" />}
             </div>
           )}
         </Container>
@@ -45,12 +45,15 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
     return (
       <section
         aria-label={title}
-        className="py-[var(--section-spacing-lg)]"
+        className={cn(
+          "min-h-[420px] py-[var(--section-spacing-lg)]",
+          !image && "bg-muted/40"
+        )}
       >
         <Container>
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
             {/* Text column */}
-            <div className={cn("flex flex-col", textWeight)}>
+            <div className={cn("flex flex-col", image ? textWeight : "lg:col-span-5")}>
               {eyebrow && (
                 <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
                   {eyebrow}
@@ -66,7 +69,7 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
               {(primaryCta || secondaryCta) && (
                 <div className="mt-8 flex flex-wrap gap-3">
                   {primaryCta && <CTAButton link={primaryCta} size="lg" />}
-                  {secondaryCta && <CTAButton link={secondaryCta} variant="outline" size="lg" />}
+                  {secondaryCta && <CTAButton link={secondaryCta} variant="secondary" size="lg" />}
                 </div>
               )}
               <TrustItems items={trustItems} className="mt-6" />
@@ -84,14 +87,14 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
     )
   }
 
-  // centered (default)
+  // centered (default) — always dark: either image+overlay or bg-foreground
   const hasBackgroundImage = !!image
   return (
     <section
       aria-label={title}
       className={cn(
-        "relative flex min-h-[560px] items-center overflow-hidden py-[var(--section-spacing-lg)]",
-        !hasBackgroundImage && "bg-muted/30"
+        "relative flex min-h-[480px] items-center overflow-hidden py-[var(--section-spacing-lg)]",
+        hasBackgroundImage ? undefined : "bg-foreground text-background"
       )}
     >
       {hasBackgroundImage && (
@@ -101,66 +104,32 @@ export function HeroSection({ data }: { data: HeroSectionData }) {
         </>
       )}
 
-      <Container
-        className={cn(
-          "relative z-10 flex flex-col items-center text-center",
-          hasBackgroundImage && "text-white"
-        )}
-      >
+      <Container className="relative z-10 flex flex-col items-center text-center">
         {eyebrow && (
-          <p
-            className={cn(
-              "mb-4 text-sm font-semibold uppercase tracking-widest",
-              hasBackgroundImage ? "text-white/80" : "text-primary"
-            )}
-          >
+          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-white/80">
             {eyebrow}
           </p>
         )}
-        <Heading
-          as="h1"
-          size="display"
-          className={hasBackgroundImage ? "text-white" : undefined}
-        >
+        <Heading as="h1" size="display" className="text-white">
           {title}
         </Heading>
         {subtitle && (
-          <p
-            className={cn(
-              "mx-auto mt-5 max-w-2xl text-xl font-light",
-              hasBackgroundImage ? "text-white/85" : "text-muted-foreground"
-            )}
-          >
+          <p className="mx-auto mt-5 max-w-2xl text-xl font-light text-white/85">
             {subtitle}
           </p>
         )}
         {body && (
-          <p
-            className={cn(
-              "mx-auto mt-4 max-w-xl leading-relaxed",
-              hasBackgroundImage ? "text-white/75" : "text-muted-foreground"
-            )}
-          >
+          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-white/75">
             {body}
           </p>
         )}
         {(primaryCta || secondaryCta) && (
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             {primaryCta && <CTAButton link={primaryCta} size="lg" />}
-            {secondaryCta && (
-              <CTAButton
-                link={secondaryCta}
-                variant="outline"
-                size="lg"
-                className={hasBackgroundImage ? "border-white text-white hover:bg-white/10" : undefined}
-              />
-            )}
+            {secondaryCta && <CTAButton link={secondaryCta} variant="secondary" size="lg" />}
           </div>
         )}
-        <TrustItems
-          items={trustItems}
-          className={cn("mt-8 justify-center", hasBackgroundImage && "text-white/80")}
-        />
+        <TrustItems items={trustItems} className="mt-8 justify-center text-white/80" />
       </Container>
     </section>
   )

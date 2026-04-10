@@ -25,7 +25,8 @@ export const siteSettingsQuery = groq`
     defaultSeoTitleTemplate,
     businessHours[]{_key, day, opens, closes, isClosed},
     socialLinks,
-    trackingIds
+    trackingIds,
+    branding{ primaryColor, primaryForeground, secondaryColor, secondaryForeground }
   }
 `
 

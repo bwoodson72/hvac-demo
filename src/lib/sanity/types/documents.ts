@@ -35,6 +35,13 @@ export interface BusinessAddress {
   zip?: string
 }
 
+export interface BrandingData {
+  primaryColor?: string
+  primaryForeground?: string
+  secondaryColor?: string
+  secondaryForeground?: string
+}
+
 export interface SiteSettingsData {
   _id: string
   businessName: string
@@ -53,6 +60,7 @@ export interface SiteSettingsData {
   businessHours?: BusinessHoursData[]
   socialLinks?: SocialLinks
   trackingIds?: TrackingIds
+  branding?: BrandingData
 }
 
 export interface AnnouncementBar {

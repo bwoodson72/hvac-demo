@@ -80,6 +80,19 @@ export const siteSettings = defineType({
       description: "Browser tab icon. Recommended: 512×512px PNG.",
       options: { hotspot: false },
     }),
+    defineField({
+      name: "branding",
+      title: "Brand Colors",
+      type: "object",
+      group: "branding",
+      description: "Override the default brand palette. Use hex values e.g. #1d4ed8",
+      fields: [
+        defineField({ name: "primaryColor", title: "Primary color", type: "string" }),
+        defineField({ name: "primaryForeground", title: "Primary foreground (text on primary)", type: "string" }),
+        defineField({ name: "secondaryColor", title: "Secondary / accent color", type: "string" }),
+        defineField({ name: "secondaryForeground", title: "Secondary foreground", type: "string" }),
+      ],
+    }),
     // ── SEO ────────────────────────────────────────────────────────────────
     defineField({
       name: "canonicalUrl",

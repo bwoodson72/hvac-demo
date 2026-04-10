@@ -12,14 +12,22 @@
 
 :root {
   /* Brand palette */
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.5 0.2 250);
+  --primary-foreground: oklch(0.98 0 0);
 
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.7 0.18 55);
+  --secondary-foreground: oklch(0.98 0 0);
 
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.7 0.18 55);
+  --accent-foreground: oklch(0.98 0 0);
+
+  --muted: oklch(0.96 0.005 250);
+  --muted-foreground: oklch(0.45 0.02 250);
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0.01 250);
+
+  --border: oklch(0.88 0.01 250);
 
   /* Semantic feedback */
   --success: oklch(0.723 0.191 142.495);
