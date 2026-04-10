@@ -1,5 +1,5 @@
 import imageUrlBuilder, { type SanityImageSource } from "@sanity/image-url"
-import { sanityClient } from "./client"
+import { sanityClient } from "./client.public"
 
 const builder = imageUrlBuilder(sanityClient)
 
