@@ -4,7 +4,7 @@ import { seoFragment, sectionsFragment } from "./_fragments"
 import type { HomepageData } from "../types"
 
 export const homepageQuery = groq`
-  *[_type == "homepageSettings"][0]{
+  *[_type == "homepage"][0]{
     _id,
     seo{${seoFragment}},
     ${sectionsFragment}
