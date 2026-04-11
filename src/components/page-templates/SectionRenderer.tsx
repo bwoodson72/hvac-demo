@@ -1,16 +1,16 @@
 import { getSectionComponent } from "@/components/sections"
-import type { SectionData, SiteSettingsData } from "@/lib/sanity/types"
+import type { SectionData, SiteData } from "@/lib/sanity/types"
 
-interface SiteContext {
+interface SiteContextProps {
   phone?: string
   email?: string
-  address?: SiteSettingsData["address"]
-  businessHours?: SiteSettingsData["businessHours"]
+  address?: SiteData["address"]
+  businessHours?: SiteData["businessHours"]
 }
 
 interface SectionRendererProps {
   sections: SectionData[]
-  siteContext?: SiteContext
+  siteContext?: SiteContextProps
 }
 
 export function SectionRenderer({ sections, siteContext }: SectionRendererProps) {
@@ -37,7 +37,7 @@ export function SectionRenderer({ sections, siteContext }: SectionRendererProps)
 
         const data =
           section._type === "contactSection" && siteContext
-            ? { ...section, ...siteContext }
+            ? { ...siteContext, ...section }
             : section
 
         return <Component key={section._key} data={data} />

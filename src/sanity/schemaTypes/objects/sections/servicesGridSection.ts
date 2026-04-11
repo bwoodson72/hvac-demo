@@ -30,34 +30,6 @@ export const servicesGridSection = defineType({
       of: [defineArrayMember({ type: "reference", to: [{ type: "service" }] })],
       hidden: ({ parent }) => Boolean((parent as { autoMode?: boolean } | undefined)?.autoMode),
     }),
-    defineField({
-      name: "cardStyle",
-      title: "Card style",
-      type: "string",
-      options: {
-        list: [
-          { title: "Default", value: "default" },
-          { title: "Minimal", value: "minimal" },
-          { title: "Detailed", value: "detailed" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "default",
-    }),
-    defineField({
-      name: "columns",
-      title: "Columns",
-      type: "string",
-      options: {
-        list: [
-          { title: "2", value: "2" },
-          { title: "3", value: "3" },
-          { title: "4", value: "4" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "3",
-    }),
   ],
   preview: {
     select: { title: "title", autoMode: "autoMode" },

@@ -1,11 +1,8 @@
 import type { Metadata } from "next"
-import { getPageBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getPageBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { StandardPage } from "@/components/page-templates"
-import { Section } from "@/components/shared/Section"
-import { Container } from "@/components/shared/Container"
-import { Heading } from "@/components/shared/Heading"
 import type { SectionData } from "@/lib/sanity/types"
 import type { PortableTextBlock } from "next-sanity"
 
@@ -14,13 +11,13 @@ import type { PortableTextBlock } from "next-sanity"
 export async function generateMetadata(): Promise<Metadata> {
   if (!isSanityConfigured) return { title: "About Us" }
   try {
-    const [page, settings] = await Promise.all([
+    const [page, site] = await Promise.all([
       getPageBySlug("about"),
-      getSiteSettings(),
+      getSite(),
     ])
     return buildMetadata(page?.seo ?? null, {
       title: "About Us",
-      siteSettings: settings,
+      siteSettings: site,
       path: "/about",
     })
   } catch {
@@ -53,14 +50,12 @@ const FALLBACK_SECTIONS: SectionData[] = [
     _key: "about-hero",
     title: "About Our Company",
     subtitle: "20+ years of trusted service in the community.",
-    variant: "compact",
   },
   {
     _type: "contentSection",
     _key: "about-content",
     title: "Who We Are",
     body: fallbackBody,
-    layout: "default",
     cta: { label: "Contact Us", href: "/contact" },
   },
   {
@@ -80,20 +75,16 @@ const FALLBACK_SECTIONS: SectionData[] = [
 
 export default async function AboutPage() {
   if (isSanityConfigured) {
+    let page = null
     try {
-      const page = await getPageBySlug("about")
-      if (page) {
-        return <StandardPage hero={page.hero} sections={page.sections} />
-      }
+      page = await getPageBySlug("about")
     } catch {
       // fall through to fallback
     }
+    if (page) {
+      return <StandardPage hero={page.hero} sections={page.sections} />
+    }
   }
 
-  // Fallback: static about page
-  return (
-    <main>
-      <StandardPage sections={FALLBACK_SECTIONS} />
-    </main>
-  )
+  return <StandardPage sections={FALLBACK_SECTIONS} />
 }

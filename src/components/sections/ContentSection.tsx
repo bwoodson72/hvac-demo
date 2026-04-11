@@ -7,7 +7,7 @@ import { CTAButton } from "@/components/shared/CTAButton"
 import type { ContentSectionData } from "@/lib/sanity/types"
 
 export function ContentSection({ data }: { data: ContentSectionData }) {
-  const { title, body, image, cta, layout } = data
+  const { title, body, image, cta } = data
 
   const textBlock = (
     <div className="flex flex-col justify-center gap-4">
@@ -17,55 +17,21 @@ export function ContentSection({ data }: { data: ContentSectionData }) {
     </div>
   )
 
-  if (layout === "centered") {
-    return (
-      <Section>
-        <Container size="md">
-          <div className="text-center [&_.rich-text]:text-left">
-            {title && (
-              <Heading as="h2" className="mb-4">
-                {title}
-              </Heading>
-            )}
-            <RichText value={body} />
-            {cta && <div className="mt-6"><CTAButton link={cta} /></div>}
-          </div>
-        </Container>
-      </Section>
-    )
-  }
-
-  if (layout === "imageLeft" || layout === "imageRight") {
+  if (image) {
     return (
       <Section>
         <Container>
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-            {layout === "imageLeft" ? (
-              <>
-                {image && (
-                  <div className="overflow-hidden rounded-xl">
-                    <CMSImage image={image} slot="sectionFeature" />
-                  </div>
-                )}
-                {textBlock}
-              </>
-            ) : (
-              <>
-                {textBlock}
-                {image && (
-                  <div className="overflow-hidden rounded-xl">
-                    <CMSImage image={image} slot="sectionFeature" />
-                  </div>
-                )}
-              </>
-            )}
+            {textBlock}
+            <div className="overflow-hidden rounded-xl">
+              <CMSImage image={image} slot="sectionFeature" />
+            </div>
           </div>
         </Container>
       </Section>
     )
   }
 
-  // default: full-width
   return (
     <Section>
       <Container size="md">

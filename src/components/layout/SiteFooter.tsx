@@ -1,25 +1,25 @@
 import Link from "next/link"
 import { CMSImage } from "@/components/shared/CMSImage"
 import { resolveLink } from "@/lib/sanity/mappers/links"
-import type { FooterSettingsData, ImageWithAltData, SocialLinks } from "@/lib/sanity/types"
+import type { SiteData } from "@/lib/sanity/types"
 
 interface SiteFooterProps {
-  data: FooterSettingsData | null
-  businessName?: string
-  logo?: ImageWithAltData | null
-  socialLinks?: SocialLinks
+  site?: SiteData | null
 }
 
-export function SiteFooter({ data, businessName = "Home", logo, socialLinks }: SiteFooterProps) {
+export function SiteFooter({ site }: SiteFooterProps) {
   const year = new Date().getFullYear()
-  const copyright = data?.copyrightText ?? `© ${year} ${businessName}. All rights reserved.`
-  const navColumns = data?.navColumns ?? []
-  const bottomLinks = data?.bottomLinks ?? []
-  const showSocial = data?.showSocialLinks && socialLinks && Object.values(socialLinks).some(Boolean)
+  const businessName = site?.businessName ?? "Home"
+  const logo = site?.footerLogo ?? site?.logo
+  const copyright = site?.copyrightText ?? `© ${year} ${businessName}. All rights reserved.`
+  const navColumns = site?.footerNavColumns ?? []
+  const bottomLinks = site?.footerBottomLinks ?? []
+  const socialLinks = site?.socialLinks
+  const showSocial = site?.showSocialLinks && socialLinks && Object.values(socialLinks).some(Boolean)
 
   return (
     <footer className="border-t bg-muted/40">
-      {(navColumns.length > 0 || data?.tagline || logo || showSocial) && (
+      {(navColumns.length > 0 || site?.footerTagline || logo || showSocial) && (
         <div className="container mx-auto px-4 sm:px-6 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {/* Brand column */}
@@ -27,8 +27,8 @@ export function SiteFooter({ data, businessName = "Home", logo, socialLinks }: S
               {logo
                 ? <CMSImage image={logo} slot="logo" className="h-10 w-auto" />
                 : <span className="font-bold text-lg">{businessName}</span>}
-              {data?.tagline && (
-                <p className="text-sm text-muted-foreground">{data.tagline}</p>
+              {site?.footerTagline && (
+                <p className="text-sm text-muted-foreground">{site.footerTagline}</p>
               )}
               {showSocial && (
                 <div className="flex flex-wrap gap-3 mt-1">

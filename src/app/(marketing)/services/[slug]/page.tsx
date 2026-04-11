@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getAllServices, getServiceBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getAllServices, getServiceBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { ServicePage } from "@/components/page-templates/ServicePage"
@@ -35,15 +35,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   if (!isSanityConfigured) return { title: slug }
   try {
-    const [service, settings] = await Promise.all([
+    const [service, site] = await Promise.all([
       getServiceBySlug(slug),
-      getSiteSettings(),
+      getSite(),
     ])
     if (!service) return { title: "Service Not Found" }
     return buildMetadata(service.seo ?? null, {
       title: service.title,
       description: service.shortDescription,
-      siteSettings: settings,
+      siteSettings: site,
       path: `/services/${slug}`,
     })
   } catch {
@@ -59,20 +59,20 @@ export default async function ServiceDetailPage({ params }: Props) {
   if (!isSanityConfigured) notFound()
 
   let service
-  let settings = null
+  let site = null
   try {
-    ;[service, settings] = await Promise.all([getServiceBySlug(slug), getSiteSettings()])
+    ;[service, site] = await Promise.all([getServiceBySlug(slug), getSite()])
   } catch {
     notFound()
   }
 
   if (!service) notFound()
 
-  const baseUrl = settings?.canonicalUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? ""
+  const baseUrl = site?.canonicalUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? ""
 
   return (
     <>
-      <JsonLd data={generateServiceSchema(service, settings)} />
+      <JsonLd data={generateServiceSchema(service, site)} />
       <JsonLd
         data={generateBreadcrumbSchema([
           { name: "Home", url: `${baseUrl}/` },

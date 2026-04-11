@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import {
-  getSiteSettings,
+  getSite,
   getAllServices,
   getAllServiceAreas,
 } from "@/lib/sanity/queries"
@@ -22,8 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (isSanityConfigured) {
     try {
-      const settings = await getSiteSettings()
-      if (settings?.canonicalUrl) baseUrl = settings.canonicalUrl
+      const site = await getSite()
+      if (site?.canonicalUrl) baseUrl = site.canonicalUrl
     } catch {
       // use env fallback
     }
@@ -70,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }))
       : []
 
-  // Blog entries added here when blog feature is enabled (see enableBlog in siteSettings)
+  // Blog entries added here when blog feature is enabled (see enableBlog in site settings)
 
   return [...staticEntries, ...serviceEntries, ...areaEntries]
 }

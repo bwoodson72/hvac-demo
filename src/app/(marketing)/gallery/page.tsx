@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getAllProjects, getPageBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getAllProjects, getPageBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { HeroSection } from "@/components/sections/HeroSection"
@@ -13,14 +13,14 @@ import type { ProjectData, ProjectRef } from "@/lib/sanity/types"
 export async function generateMetadata(): Promise<Metadata> {
   if (!isSanityConfigured) return { title: "Project Gallery" }
   try {
-    const [page, settings] = await Promise.all([
+    const [page, site] = await Promise.all([
       getPageBySlug("gallery"),
-      getSiteSettings(),
+      getSite(),
     ])
     return buildMetadata(page?.seo ?? null, {
       title: "Project Gallery",
       description: "Browse our recent projects and completed work.",
-      siteSettings: settings,
+      siteSettings: site,
       path: "/gallery",
     })
   } catch {
@@ -72,12 +72,11 @@ export default async function GalleryPage() {
           _key: "gallery-hero",
           title: heroTitle,
           subtitle: heroSubtitle ?? "A look at some of our recent completed projects.",
-          variant: "compact",
         }}
       />
 
       {projectRefs.length > 0 ? (
-        <GalleryPageClient projects={projectRefs} categories={categories} layout="grid" />
+        <GalleryPageClient projects={projectRefs} categories={categories} />
       ) : (
         <Section>
           <Container size="sm">

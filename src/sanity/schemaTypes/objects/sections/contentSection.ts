@@ -27,26 +27,11 @@ export const contentSection = defineType({
       title: "CTA",
       type: "link",
     }),
-    defineField({
-      name: "layout",
-      title: "Layout",
-      type: "string",
-      options: {
-        list: [
-          { title: "Default", value: "default" },
-          { title: "Image left", value: "imageLeft" },
-          { title: "Image right", value: "imageRight" },
-          { title: "Centered", value: "centered" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "default",
-    }),
   ],
   preview: {
-    select: { title: "title", layout: "layout" },
-    prepare({ title, layout }: { title?: string; layout?: string }) {
-      return { title: title ?? "Content section", subtitle: layout ?? "default" }
+    select: { title: "title" },
+    prepare({ title }: { title?: string }) {
+      return { title: title ?? "Content section" }
     },
   },
 })

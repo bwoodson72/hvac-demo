@@ -9,8 +9,7 @@ import type {
 } from "./objects"
 import type { SectionData } from "./sections"
 
-// ── Singleton documents ───────────────────────────────────────────────────────
-// Types are forward-compatible — schemas will be created in a later prompt.
+// ── Shared sub-interfaces ─────────────────────────────────────────────────────
 
 export interface SocialLinks {
   facebook?: string
@@ -42,7 +41,9 @@ export interface BrandingData {
   secondaryForeground?: { hex?: string }
 }
 
-export interface SiteSettingsData {
+// ── Singleton documents ───────────────────────────────────────────────────────
+
+export interface SiteData {
   _id: string
   businessName: string
   tagline?: string
@@ -52,46 +53,24 @@ export interface SiteSettingsData {
   logo?: ImageWithAltData
   darkLogo?: ImageWithAltData
   favicon?: SanityImage
-  defaultSeo?: SeoData
-  /** Base URL for the site, e.g. https://example.com (no trailing slash) */
-  canonicalUrl?: string
-  /** Title template for SEO, e.g. "%s | My Business". Falls back to "${title} | ${businessName}". */
-  defaultSeoTitleTemplate?: string
   businessHours?: BusinessHoursData[]
-  socialLinks?: SocialLinks
-  trackingIds?: TrackingIds
-  branding?: BrandingData
-}
-
-export interface AnnouncementBar {
-  text?: string
-  cta?: LinkData
-  isActive?: boolean
-}
-
-export interface HeaderSettingsData {
-  _id: string
-  logo?: ImageWithAltData
+  enableBlog?: boolean
   navLinks?: LinkData[]
   ctaButton?: LinkData
   showPhoneInHeader?: boolean
-  announcementBar?: AnnouncementBar
-}
-
-export interface FooterNavColumn {
-  _key: string
-  heading?: string
-  links?: LinkData[]
-}
-
-export interface FooterSettingsData {
-  _id: string
-  logo?: ImageWithAltData
-  tagline?: string
-  navColumns?: FooterNavColumn[]
-  bottomLinks?: LinkData[]
+  announcementBar?: { text?: string; cta?: LinkData; isActive?: boolean }
+  footerLogo?: ImageWithAltData
+  footerTagline?: string
+  footerNavColumns?: Array<{ _key: string; heading?: string; links?: LinkData[] }>
+  footerBottomLinks?: LinkData[]
   showSocialLinks?: boolean
   copyrightText?: string
+  socialLinks?: SocialLinks
+  trackingIds?: TrackingIds
+  branding?: BrandingData
+  canonicalUrl?: string
+  defaultSeoTitleTemplate?: string
+  defaultSeo?: SeoData
 }
 
 export interface HomepageData {
@@ -122,7 +101,6 @@ export interface ServiceData {
   seo?: SeoData
   iconKey?: string
   featuredImage?: ImageWithAltData
-  sections?: SectionData[]
   faqs?: FaqData[]
   testimonials?: TestimonialData[]
   relatedServices?: ServiceListItemData[]
@@ -148,7 +126,6 @@ export interface ServiceAreaData {
   hero?: HeroData
   seo?: SeoData
   introCopy?: PortableText
-  sections?: SectionData[]
   relatedServices?: ServiceListItemData[]
   faqs?: FaqData[]
   neighborhoods?: string[]

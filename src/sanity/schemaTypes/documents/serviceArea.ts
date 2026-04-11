@@ -1,6 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity"
 import { PinIcon } from "@sanity/icons"
-import { sectionTypes } from "@/sanity/lib/sectionTypes"
 
 export const serviceArea = defineType({
   name: "serviceArea",
@@ -9,7 +8,6 @@ export const serviceArea = defineType({
   icon: PinIcon,
   groups: [
     { name: "content", title: "Content", default: true },
-    { name: "sections", title: "Page sections" },
     { name: "relations", title: "Relations" },
     { name: "seo", title: "SEO" },
     { name: "settings", title: "Settings" },
@@ -97,16 +95,6 @@ export const serviceArea = defineType({
       of: [defineArrayMember({ type: "string" })],
       description:
         "Subdivisions or neighborhoods within this service area. Shown as a badge list on the page.",
-    }),
-
-    // ── Page sections ──────────────────────────────────────────────────────
-    defineField({
-      name: "sections",
-      title: "Page sections",
-      type: "array",
-      group: "sections",
-      of: sectionTypes,
-      description: "Additional content sections rendered below the intro copy.",
     }),
 
     // ── Relations ──────────────────────────────────────────────────────────

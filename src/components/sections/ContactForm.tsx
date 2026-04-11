@@ -12,15 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useContactForm } from "@/lib/forms/useContactForm"
-import type { ContactSectionData } from "@/lib/sanity/types"
 
-interface ContactFormProps {
-  formMode: ContactSectionData["formMode"]
-}
-
-export function ContactForm({ formMode }: ContactFormProps) {
+export function ContactForm() {
   const { values, errors, status, setField, setSelectField, handleSubmit, reset } =
-    useContactForm(formMode)
+    useContactForm()
 
   if (status === "success") {
     return (
@@ -76,36 +71,32 @@ export function ContactForm({ formMode }: ContactFormProps) {
         />
       </FormField>
 
-      {formMode !== "minimal" && (
-        <FormField label="Phone Number" error={errors.phone}>
-          <Input
-            id="contact-phone"
-            type="tel"
-            autoComplete="tel"
-            value={values.phone}
-            onChange={setField("phone")}
-            aria-invalid={!!errors.phone}
-            placeholder="(555) 000-1234"
-          />
-        </FormField>
-      )}
+      <FormField label="Phone Number" error={errors.phone}>
+        <Input
+          id="contact-phone"
+          type="tel"
+          autoComplete="tel"
+          value={values.phone}
+          onChange={setField("phone")}
+          aria-invalid={!!errors.phone}
+          placeholder="(555) 000-1234"
+        />
+      </FormField>
 
-      {formMode === "full" && (
-        <FormField label="Service Needed">
-          <Select value={values.service} onValueChange={setSelectField("service")}>
-            <SelectTrigger id="contact-service" className="w-full h-9">
-              <SelectValue placeholder="Select a service…" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="general">General Inquiry</SelectItem>
-              <SelectItem value="repair">Repair / Service Call</SelectItem>
-              <SelectItem value="install">New Installation</SelectItem>
-              <SelectItem value="estimate">Free Estimate</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-        </FormField>
-      )}
+      <FormField label="Service Needed">
+        <Select value={values.service} onValueChange={setSelectField("service")}>
+          <SelectTrigger id="contact-service" className="w-full h-9">
+            <SelectValue placeholder="Select a service…" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="general">General Inquiry</SelectItem>
+            <SelectItem value="repair">Repair / Service Call</SelectItem>
+            <SelectItem value="install">New Installation</SelectItem>
+            <SelectItem value="estimate">Free Estimate</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
+          </SelectContent>
+        </Select>
+      </FormField>
 
       <FormField label="Message" error={errors.message} required>
         <Textarea

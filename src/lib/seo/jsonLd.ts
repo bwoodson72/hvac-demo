@@ -1,4 +1,4 @@
-import type { SiteSettingsData, ServiceData, FaqData } from "@/lib/sanity/types"
+import type { SiteData, ServiceData, FaqData } from "@/lib/sanity/types"
 import type { FaqRef } from "@/lib/sanity/types"
 import type { PortableTextBlock } from "next-sanity"
 
@@ -18,7 +18,7 @@ function ptToText(blocks: PortableTextBlock[]): string {
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? ""
 
-function siteBase(settings?: SiteSettingsData | null): string {
+function siteBase(settings?: SiteData | null): string {
   return settings?.canonicalUrl ?? BASE_URL
 }
 
@@ -28,7 +28,7 @@ function siteBase(settings?: SiteSettingsData | null): string {
  * LocalBusiness schema — render once in the root marketing layout.
  */
 export function generateLocalBusinessSchema(
-  settings: SiteSettingsData
+  settings: SiteData
 ): Record<string, unknown> {
   const base = siteBase(settings)
 
@@ -73,7 +73,7 @@ export function generateLocalBusinessSchema(
  */
 export function generateServiceSchema(
   service: ServiceData,
-  settings: SiteSettingsData | null | undefined
+  settings: SiteData | null | undefined
 ): Record<string, unknown> {
   const base = siteBase(settings)
 

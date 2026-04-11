@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
-import { getAllTestimonials, getPageBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getAllTestimonials, getPageBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { HeroSection } from "@/components/sections/HeroSection"
 import { TestimonialSection } from "@/components/sections/TestimonialSection"
 import { Section } from "@/components/shared/Section"
 import { Container } from "@/components/shared/Container"
-import { Heading } from "@/components/shared/Heading"
 import type { TestimonialData } from "@/lib/sanity/types"
 import type { TestimonialRef } from "@/lib/sanity/types"
 
@@ -15,14 +14,14 @@ import type { TestimonialRef } from "@/lib/sanity/types"
 export async function generateMetadata(): Promise<Metadata> {
   if (!isSanityConfigured) return { title: "Customer Reviews" }
   try {
-    const [page, settings] = await Promise.all([
+    const [page, site] = await Promise.all([
       getPageBySlug("reviews"),
-      getSiteSettings(),
+      getSite(),
     ])
     return buildMetadata(page?.seo ?? null, {
       title: "Customer Reviews",
       description: "See what our customers are saying about our service.",
-      siteSettings: settings,
+      siteSettings: site,
       path: "/reviews",
     })
   } catch {
@@ -84,7 +83,6 @@ export default async function ReviewsPage() {
           _key: "reviews-hero",
           title: pageTitle,
           subtitle: pageSubtitle ?? "Honest feedback from real customers across our service area.",
-          variant: "compact",
         }}
       />
 
@@ -97,7 +95,6 @@ export default async function ReviewsPage() {
             intro,
             autoMode: false,
             selectedTestimonials: testimonials.map(toRef),
-            layout: "grid",
           }}
         />
       ) : (

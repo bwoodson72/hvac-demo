@@ -1,5 +1,5 @@
 // Queries (strings) — use these directly with the Sanity client or Vision tool
-export { siteSettingsQuery, headerSettingsQuery, footerSettingsQuery } from "./settings"
+export { siteQuery } from "./settings"
 export { homepageQuery } from "./homepage"
 export { allServicesQuery, serviceBySlugQuery } from "./services"
 export { allServiceAreasQuery, serviceAreaBySlugQuery } from "./serviceAreas"
@@ -12,11 +12,7 @@ export { allPostsQuery, postBySlugQuery } from "./posts"
 export { activeOffersQuery, offersByLocationQuery } from "./offers"
 
 // Typed fetcher functions — the only way page components should load data
-export {
-  getSiteSettings,
-  getHeaderSettings,
-  getFooterSettings,
-} from "./settings"
+export { getSite } from "./settings"
 export { getHomepage } from "./homepage"
 export { getAllServices, getServiceBySlug } from "./services"
 export { getAllServiceAreas, getServiceAreaBySlug } from "./serviceAreas"

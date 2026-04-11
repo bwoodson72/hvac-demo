@@ -4,7 +4,6 @@ import { TestimonialSection } from "@/components/sections/TestimonialSection"
 import { FaqSection } from "@/components/sections/FaqSection"
 import { ServicesGridSection } from "@/components/sections/ServicesGridSection"
 import { CtaBandSection } from "@/components/sections/CtaBandSection"
-import { SectionRenderer } from "./SectionRenderer"
 import type {
   ServiceData,
   ServiceRef,
@@ -66,7 +65,6 @@ export function ServicePage({ service, defaultCta }: ServicePageProps) {
         data={{
           _type: "heroSection",
           _key: "service-hero",
-          variant: "split",
           ...service.hero,
           title: service.hero?.title ?? service.title,
           image: service.hero?.image ?? service.featuredImage,
@@ -81,15 +79,11 @@ export function ServicePage({ service, defaultCta }: ServicePageProps) {
             _key: "service-intro",
             title: undefined,
             body: service.longDescription,
-            layout: "default",
           }}
         />
       )}
 
-      {/* 3. Custom CMS sections */}
-      {service.sections && <SectionRenderer sections={service.sections} />}
-
-      {/* 4. Testimonials */}
+      {/* 3. Testimonials */}
       {service.testimonials && service.testimonials.length > 0 && (
         <TestimonialSection
           data={{
@@ -98,7 +92,6 @@ export function ServicePage({ service, defaultCta }: ServicePageProps) {
             title: "What Customers Say",
             autoMode: false,
             selectedTestimonials: service.testimonials.map(toTestimonialRef),
-            layout: "grid",
           }}
         />
       )}
@@ -124,8 +117,6 @@ export function ServicePage({ service, defaultCta }: ServicePageProps) {
             _key: "service-related",
             title: "Related Services",
             autoMode: false,
-            columns: "3",
-            cardStyle: "minimal",
             selectedServices: service.relatedServices.map(toServiceRef),
           }}
         />
@@ -139,7 +130,6 @@ export function ServicePage({ service, defaultCta }: ServicePageProps) {
           title: `Ready to Schedule ${service.title}?`,
           text: "Contact us today for a free, no-obligation estimate.",
           primaryCta: { label: ctaLabel, href: ctaDest },
-          background: "primary",
         }}
       />
     </main>

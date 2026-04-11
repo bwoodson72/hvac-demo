@@ -1,7 +1,7 @@
-import type { SiteSettingsData } from "@/lib/sanity/types"
+import type { SiteData } from "@/lib/sanity/types"
 
-export function BrandStyles({ settings }: { settings: SiteSettingsData | null }) {
-  const b = settings?.branding
+export function BrandStyles({ site }: { site: SiteData | null | undefined }) {
+  const b = site?.branding
   if (!b) return null
   const vars = [
     b.primaryColor?.hex && `--primary: ${b.primaryColor.hex};`,

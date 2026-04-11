@@ -4,8 +4,7 @@ import { ContentSection } from "@/components/sections/ContentSection"
 import { ServicesGridSection } from "@/components/sections/ServicesGridSection"
 import { FaqSection } from "@/components/sections/FaqSection"
 import { CtaBandSection } from "@/components/sections/CtaBandSection"
-import { ContactSection } from "@/components/sections/ContactSection"
-import { SectionRenderer } from "./SectionRenderer"
+import { ContextualContactSection } from "@/components/sections/ContextualContactSection"
 import { Section } from "@/components/shared/Section"
 import { Container } from "@/components/shared/Container"
 import { Heading } from "@/components/shared/Heading"
@@ -50,7 +49,6 @@ export function ServiceAreaPage({ serviceArea }: ServiceAreaPageProps) {
         data={{
           _type: "heroSection",
           _key: "area-hero",
-          variant: "compact",
           ...serviceArea.hero,
           title: serviceArea.hero?.title ?? `Services in ${locationLabel}`,
           subtitle:
@@ -66,7 +64,6 @@ export function ServiceAreaPage({ serviceArea }: ServiceAreaPageProps) {
             _type: "contentSection",
             _key: "area-intro",
             body: serviceArea.introCopy,
-            layout: "default",
           }}
         />
       )}
@@ -107,17 +104,12 @@ export function ServiceAreaPage({ serviceArea }: ServiceAreaPageProps) {
             _key: "area-services",
             title: `Services Available in ${serviceArea.city}`,
             autoMode: false,
-            columns: "3",
-            cardStyle: "default",
             selectedServices: serviceArea.relatedServices.map(toServiceRef),
           }}
         />
       )}
 
-      {/* 6. Custom CMS sections */}
-      {serviceArea.sections && <SectionRenderer sections={serviceArea.sections} />}
-
-      {/* 7. FAQs */}
+      {/* 6. FAQs */}
       {serviceArea.faqs && serviceArea.faqs.length > 0 && (
         <FaqSection
           data={{
@@ -139,20 +131,14 @@ export function ServiceAreaPage({ serviceArea }: ServiceAreaPageProps) {
           text: "Local technicians ready to help. Contact us for a free estimate.",
           primaryCta: { label: "Get a Free Quote", href: "/contact" },
           secondaryCta: { label: "Call Now", href: "tel:+15550001234" },
-          background: "primary",
         }}
       />
 
       {/* 9. Contact section */}
-      <ContactSection
+      <ContextualContactSection
         data={{
           _type: "contactSection",
           _key: "area-contact",
-          formMode: "compact",
-          showPhone: true,
-          showEmail: true,
-          showAddress: false,
-          showHours: true,
         }}
       />
     </main>

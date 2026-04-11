@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
-import { getSiteSettings } from "@/lib/sanity/queries"
+import { getSite } from "@/lib/sanity/queries"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { urlFor } from "@/lib/sanity/image"
 import { TrackingScripts } from "@/components/shared/TrackingScripts"
@@ -19,12 +19,12 @@ const geistMono = Geist_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   try {
     if (!isSanityConfigured) throw new Error("Sanity not configured")
-    const settings = await getSiteSettings()
-    const faviconUrl = settings?.favicon?.asset
-      ? urlFor(settings.favicon).width(512).height(512).url()
+    const site = await getSite()
+    const faviconUrl = site?.favicon?.asset
+      ? urlFor(site.favicon).width(512).height(512).url()
       : undefined
     return {
-      title: { default: settings?.businessName ?? "Home", template: "%s" },
+      title: { default: site?.businessName ?? "Home", template: "%s" },
       description: "",
       robots: { index: true, follow: true },
       ...(faviconUrl ? { icons: { icon: faviconUrl, apple: faviconUrl } } : {}),
@@ -44,8 +44,8 @@ export default async function RootLayout({
   let trackingIds = undefined
   try {
     if (isSanityConfigured) {
-      const settings = await getSiteSettings()
-      trackingIds = settings?.trackingIds
+      const site = await getSite()
+      trackingIds = site?.trackingIds
     }
   } catch {
     // tracking unavailable — skip scripts

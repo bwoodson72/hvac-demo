@@ -6,13 +6,12 @@ import type { ContactSectionData } from "@/lib/sanity/types"
 import { ContactForm } from "./ContactForm"
 
 export function ContactSection({ data }: { data: ContactSectionData }) {
-  const { title, intro, formMode, showPhone, showEmail, showAddress, showHours,
-    phone, email, address, businessHours } = data
+  const { title, intro, phone, email, address, businessHours } = data
 
-  const hasPhone = showPhone && !!phone
-  const hasEmail = showEmail && !!email
-  const hasAddress = showAddress && !!(address?.street || address?.city || address?.state || address?.zip)
-  const hasHours = showHours && !!businessHours?.length
+  const hasPhone = !!phone
+  const hasEmail = !!email
+  const hasAddress = !!(address?.street || address?.city || address?.state || address?.zip)
+  const hasHours = !!businessHours?.length
   const hasContactInfo = hasPhone || hasEmail || hasAddress || hasHours
 
   return (
@@ -32,7 +31,7 @@ export function ContactSection({ data }: { data: ContactSectionData }) {
         >
           {/* Form */}
           <div>
-            <ContactForm formMode={formMode} />
+            <ContactForm />
           </div>
 
           {/* Contact info sidebar */}

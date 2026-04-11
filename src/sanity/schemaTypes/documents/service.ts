@@ -1,6 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity"
 import { WrenchIcon } from "@sanity/icons"
-import { sectionTypes } from "@/sanity/lib/sectionTypes"
 
 export const service = defineType({
   name: "service",
@@ -9,7 +8,6 @@ export const service = defineType({
   icon: WrenchIcon,
   groups: [
     { name: "content", title: "Content", default: true },
-    { name: "sections", title: "Page sections" },
     { name: "relations", title: "Relations" },
     { name: "seo", title: "SEO" },
     { name: "settings", title: "Settings" },
@@ -76,11 +74,29 @@ export const service = defineType({
     }),
     defineField({
       name: "iconKey",
-      title: "Icon key",
+      title: "Icon",
       type: "string",
       group: "content",
-      description:
-        "Lucide icon identifier shown on service cards (e.g., 'wrench', 'zap', 'droplets', 'flame'). See icon reference at lucide.dev.",
+      description: "Icon shown on service cards.",
+      options: {
+        list: [
+          { title: "Wrench (repairs, general)", value: "wrench" },
+          { title: "Droplets (plumbing, water)", value: "droplets" },
+          { title: "Flame (heating, gas)", value: "flame" },
+          { title: "Zap (electrical, heat pump)", value: "zap" },
+          { title: "Wind (HVAC, air)", value: "wind" },
+          { title: "Thermometer (temperature)", value: "thermometer" },
+          { title: "Shield (protection, warranty)", value: "shield" },
+          { title: "Home (residential)", value: "home" },
+          { title: "Building (commercial)", value: "building" },
+          { title: "Leaf (eco, green)", value: "leaf" },
+          { title: "Truck (mobile service)", value: "truck" },
+          { title: "Clock (emergency, fast)", value: "clock" },
+          { title: "Star (premium)", value: "star" },
+          { title: "Check circle (done, complete)", value: "checkCircle" },
+          { title: "Tool (maintenance)", value: "tool" },
+        ],
+      },
     }),
     defineField({
       name: "featuredImage",
@@ -88,16 +104,6 @@ export const service = defineType({
       type: "imageWithAlt",
       group: "content",
       description: "Primary image for this service. Used in the hero, cards, and OG image.",
-    }),
-
-    // ── Page sections ──────────────────────────────────────────────────────
-    defineField({
-      name: "sections",
-      title: "Page sections",
-      type: "array",
-      group: "sections",
-      of: sectionTypes,
-      description: "Additional content sections rendered below the service description.",
     }),
 
     // ── Relations ──────────────────────────────────────────────────────────

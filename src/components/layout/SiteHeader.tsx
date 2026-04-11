@@ -4,26 +4,26 @@ import { Button } from "@/components/ui/button"
 import { CMSImage } from "@/components/shared/CMSImage"
 import { resolveLink } from "@/lib/sanity/mappers/links"
 import { MobileMenu } from "./MobileMenu"
-import type { HeaderSettingsData, ImageWithAltData } from "@/lib/sanity/types"
+import type { SiteData } from "@/lib/sanity/types"
 
 interface SiteHeaderProps {
-  data: HeaderSettingsData | null
-  businessName?: string
-  logo?: ImageWithAltData | null
-  phone?: string
+  site?: SiteData | null
 }
 
-export function SiteHeader({ data, businessName = "Home", logo, phone }: SiteHeaderProps) {
-  const navLinks = data?.navLinks ?? []
-  const cta = data?.ctaButton ? resolveLink(data.ctaButton) : null
+export function SiteHeader({ site }: SiteHeaderProps) {
+  const businessName = site?.businessName ?? "Home"
+  const logo = site?.logo
+  const phone = site?.phone
+  const navLinks = site?.navLinks ?? []
+  const cta = site?.ctaButton ? resolveLink(site.ctaButton) : null
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {data?.announcementBar?.isActive && data.announcementBar.text && (
+      {site?.announcementBar?.isActive && site.announcementBar.text && (
         <div className="bg-primary text-primary-foreground text-center text-sm py-1.5 px-4">
-          {data.announcementBar.text}
-          {data.announcementBar.cta && (() => {
-            const barCta = resolveLink(data.announcementBar!.cta!)
+          {site.announcementBar.text}
+          {site.announcementBar.cta && (() => {
+            const barCta = resolveLink(site.announcementBar!.cta!)
             return (
               <Link
                 href={barCta.href}
@@ -67,7 +67,7 @@ export function SiteHeader({ data, businessName = "Home", logo, phone }: SiteHea
 
         {/* Desktop CTA + mobile hamburger */}
         <div className="flex items-center gap-2">
-          {data?.showPhoneInHeader !== false && phone && (
+          {site?.showPhoneInHeader !== false && phone && (
             <a
               href={`tel:${phone}`}
               className="hidden md:flex items-center gap-2 text-sm font-semibold text-foreground hover:text-primary transition-colors"
@@ -86,7 +86,7 @@ export function SiteHeader({ data, businessName = "Home", logo, phone }: SiteHea
           <MobileMenu
             businessName={businessName}
             navLinks={navLinks}
-            ctaButton={data?.ctaButton}
+            ctaButton={site?.ctaButton}
             phone={phone}
           />
         </div>

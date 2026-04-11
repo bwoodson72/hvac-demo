@@ -23,8 +23,6 @@ export function singletonListItem(
 
 /** The set of type names treated as singletons. */
 export const SINGLETON_TYPES = new Set([
-  "siteSettings",
-  "headerSettings",
-  "footerSettings",
+  "site",
   "homepage",
 ])

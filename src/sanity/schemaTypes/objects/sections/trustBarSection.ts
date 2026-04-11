@@ -28,19 +28,6 @@ export const trustBarSection = defineType({
         }),
       ],
     }),
-    defineField({
-      name: "layout",
-      title: "Layout",
-      type: "string",
-      options: {
-        list: [
-          { title: "Inline", value: "inline" },
-          { title: "Grid", value: "grid" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "inline",
-    }),
   ],
   preview: {
     select: { items: "items" },

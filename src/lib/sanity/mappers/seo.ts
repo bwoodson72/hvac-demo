@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { urlFor } from "../image"
-import type { SeoData, SiteSettingsData } from "../types"
+import type { SeoData, SiteData } from "../types"
 
 interface BuildMetadataDefaults {
   /** Page-level title (e.g. document title field) */
@@ -8,7 +8,7 @@ interface BuildMetadataDefaults {
   /** Page-level fallback description */
   description?: string
   /** Site-wide settings for final fallbacks */
-  siteSettings?: SiteSettingsData | null
+  siteSettings?: SiteData | null
   /** URL path for canonical construction, e.g. "/services/plumbing" */
   path?: string
   /** OpenGraph page type (default: "website") */

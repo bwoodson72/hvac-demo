@@ -2,8 +2,6 @@ import type { StructureResolver } from "sanity/structure"
 import { env } from "@/lib/sanity/env"
 import {
   CogIcon,
-  MenuIcon,
-  UlistIcon,
   HomeIcon,
   DocumentsIcon,
   WrenchIcon,
@@ -22,9 +20,7 @@ export const structure: StructureResolver = (S) =>
     .title("Content")
     .items([
       // ── Singletons ─────────────────────────────────────────────────────
-      singletonListItem(S, "siteSettings", "Site Settings", CogIcon),
-      singletonListItem(S, "headerSettings", "Header & Navigation", MenuIcon),
-      singletonListItem(S, "footerSettings", "Footer", UlistIcon),
+      singletonListItem(S, "site", "Site", CogIcon),
       singletonListItem(S, "homepage", "Homepage", HomeIcon),
 
       S.divider(),

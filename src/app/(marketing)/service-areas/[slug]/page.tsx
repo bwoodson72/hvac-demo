@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getAllServiceAreas, getServiceAreaBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getAllServiceAreas, getServiceAreaBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { ServiceAreaPage } from "@/components/page-templates/ServiceAreaPage"
@@ -31,16 +31,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   if (!isSanityConfigured) return { title: slug }
   try {
-    const [area, settings] = await Promise.all([
+    const [area, site] = await Promise.all([
       getServiceAreaBySlug(slug),
-      getSiteSettings(),
+      getSite(),
     ])
     if (!area) return { title: "Service Area Not Found" }
     const locationLabel = [area.city, area.state].filter(Boolean).join(", ")
     return buildMetadata(area.seo ?? null, {
       title: `Services in ${locationLabel}`,
       description: `Professional home services serving ${locationLabel} and the surrounding area.`,
-      siteSettings: settings,
+      siteSettings: site,
       path: `/service-areas/${slug}`,
     })
   } catch {
@@ -56,9 +56,9 @@ export default async function ServiceAreaDetailPage({ params }: Props) {
   if (!isSanityConfigured) notFound()
 
   let area
-  let settings = null
+  let site = null
   try {
-    ;[area, settings] = await Promise.all([getServiceAreaBySlug(slug), getSiteSettings()])
+    ;[area, site] = await Promise.all([getServiceAreaBySlug(slug), getSite()])
   } catch {
     notFound()
   }
@@ -66,12 +66,12 @@ export default async function ServiceAreaDetailPage({ params }: Props) {
   if (!area) notFound()
 
   const locationLabel = [area.city, area.state].filter(Boolean).join(", ")
-  const baseUrl = settings?.canonicalUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? ""
+  const baseUrl = site?.canonicalUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? ""
 
   // LocalBusiness with areaServed scoped to this city
-  const localBusinessData = settings
+  const localBusinessData = site
     ? {
-        ...generateLocalBusinessSchema(settings),
+        ...generateLocalBusinessSchema(site),
         areaServed: {
           "@type": "City",
           name: locationLabel,

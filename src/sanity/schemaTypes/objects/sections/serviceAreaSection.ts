@@ -30,25 +30,11 @@ export const serviceAreaSection = defineType({
       of: [defineArrayMember({ type: "reference", to: [{ type: "serviceArea" }] })],
       hidden: ({ parent }) => Boolean((parent as { autoMode?: boolean } | undefined)?.autoMode),
     }),
-    defineField({
-      name: "displayMode",
-      title: "Display mode",
-      type: "string",
-      options: {
-        list: [
-          { title: "List", value: "list" },
-          { title: "Grid", value: "grid" },
-          { title: "Badges", value: "badges" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "grid",
-    }),
   ],
   preview: {
-    select: { title: "title", displayMode: "displayMode" },
-    prepare({ title, displayMode }: { title?: string; displayMode?: string }) {
-      return { title: title ?? "Service areas", subtitle: displayMode ?? "grid" }
+    select: { title: "title" },
+    prepare({ title }: { title?: string }) {
+      return { title: title ?? "Service areas" }
     },
   },
 })

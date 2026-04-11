@@ -43,26 +43,6 @@ export const processSection = defineType({
         }),
       ],
     }),
-    defineField({
-      name: "showNumbers",
-      title: "Show step numbers",
-      type: "boolean",
-      initialValue: true,
-    }),
-    defineField({
-      name: "variant",
-      title: "Layout variant",
-      type: "string",
-      options: {
-        list: [
-          { title: "Horizontal", value: "horizontal" },
-          { title: "Vertical", value: "vertical" },
-          { title: "Timeline", value: "timeline" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "vertical",
-    }),
   ],
   preview: {
     select: { title: "title", steps: "steps" },

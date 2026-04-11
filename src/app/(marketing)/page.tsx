@@ -1,19 +1,19 @@
 import type { Metadata } from "next"
-import { SectionRenderer } from "@/components/page-templates/SectionRenderer"
-import { getHomepage, getSiteSettings } from "@/lib/sanity/queries"
+import { SectionRendererWithContext } from "@/components/page-templates/SectionRendererWithContext"
+import { getHomepage, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
-import type { SectionData, SiteSettingsData } from "@/lib/sanity/types"
+import type { SectionData } from "@/lib/sanity/types"
 
 // ── Metadata ─────────────────────────────────────────────────────────────────
 
 export async function generateMetadata(): Promise<Metadata> {
   if (!isSanityConfigured) return { title: "Home" }
   try {
-    const [homepage, settings] = await Promise.all([getHomepage(), getSiteSettings()])
+    const [homepage, site] = await Promise.all([getHomepage(), getSite()])
     return buildMetadata(homepage?.seo ?? null, {
-      title: settings?.businessName ?? "Home",
-      siteSettings: settings,
+      title: site?.businessName ?? "Home",
+      siteSettings: site,
       path: "/",
     })
   } catch {
@@ -31,7 +31,6 @@ const FALLBACK_SECTIONS: SectionData[] = [
     subtitle: "Fast response, fair pricing, and guaranteed workmanship on every job.",
     primaryCta: { label: "Get a Free Quote", href: "/contact" },
     secondaryCta: { label: "Our Services", href: "/services" },
-    variant: "centered",
     trustItems: [
       { _key: "t1", icon: "shield", label: "Licensed & Insured" },
       { _key: "t2", icon: "star", label: "5-Star Rated" },
@@ -41,7 +40,6 @@ const FALLBACK_SECTIONS: SectionData[] = [
   {
     _type: "trustBarSection",
     _key: "fb-trust",
-    layout: "inline",
     items: [
       { _key: "i1", icon: "badgeCheck", label: "Licensed & Insured" },
       { _key: "i2", icon: "trophy", label: "Years Experience", value: "20+" },
@@ -55,7 +53,6 @@ const FALLBACK_SECTIONS: SectionData[] = [
     title: "Ready to Get Started?",
     text: "Contact us today for a free, no-obligation estimate.",
     primaryCta: { label: "Contact Us", href: "/contact" },
-    background: "primary",
   },
 ]
 
@@ -63,18 +60,11 @@ const FALLBACK_SECTIONS: SectionData[] = [
 
 export default async function HomePage() {
   let sections: SectionData[] | undefined
-  let siteContext: { phone?: string; email?: string; address?: SiteSettingsData["address"]; businessHours?: SiteSettingsData["businessHours"] } | undefined
 
   if (isSanityConfigured) {
     try {
-      const [homepage, settings] = await Promise.all([getHomepage(), getSiteSettings()])
+      const homepage = await getHomepage()
       sections = homepage?.sections
-      siteContext = {
-        phone: settings?.phone ?? undefined,
-        email: settings?.email ?? undefined,
-        address: settings?.address ?? undefined,
-        businessHours: settings?.businessHours ?? undefined,
-      }
     } catch {
       // Sanity configured but unreachable — use fallback
     }
@@ -92,7 +82,7 @@ export default async function HomePage() {
           <code className="font-mono">.env.local</code>.
         </div>
       )}
-      <SectionRenderer sections={renderSections} siteContext={siteContext} />
+      <SectionRendererWithContext sections={renderSections} />
     </main>
   )
 }

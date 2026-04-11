@@ -1,4 +1,4 @@
-import type { ImageWithAltData, LinkData, PortableText } from "./objects"
+import type { ImageWithAltData, LinkData, PortableText, BusinessHoursData } from "./objects"
 
 // ── Inline sub-types used within sections ─────────────────────────────────────
 
@@ -104,7 +104,6 @@ export interface HeroSectionData {
   secondaryCta?: LinkData
   image?: ImageWithAltData
   trustItems?: TrustItem[]
-  variant: "centered" | "split" | "imageRight" | "compact"
   backgroundStyle?: "light" | "dark" | "primary" | "muted"
 }
 
@@ -112,7 +111,6 @@ export interface TrustBarSectionData {
   _type: "trustBarSection"
   _key: string
   items?: TrustBarItem[]
-  layout: "inline" | "grid"
 }
 
 export interface ServicesGridSectionData {
@@ -122,8 +120,6 @@ export interface ServicesGridSectionData {
   intro?: string
   autoMode: boolean
   selectedServices?: ServiceRef[]
-  cardStyle?: "default" | "minimal" | "detailed"
-  columns: "2" | "3" | "4"
 }
 
 export interface FeatureListSectionData {
@@ -132,7 +128,6 @@ export interface FeatureListSectionData {
   title?: string
   intro?: string
   features?: Feature[]
-  layout: "grid" | "list" | "alternating"
 }
 
 export interface ProcessSectionData {
@@ -141,8 +136,6 @@ export interface ProcessSectionData {
   title?: string
   intro?: string
   steps?: ProcessStep[]
-  showNumbers: boolean
-  variant: "horizontal" | "vertical" | "timeline"
 }
 
 export interface CtaBandSectionData {
@@ -152,7 +145,6 @@ export interface CtaBandSectionData {
   text?: string
   primaryCta?: LinkData
   secondaryCta?: LinkData
-  background: "default" | "primary" | "dark" | "accent"
 }
 
 export interface TestimonialSectionData {
@@ -162,7 +154,6 @@ export interface TestimonialSectionData {
   intro?: string
   autoMode: boolean
   selectedTestimonials?: TestimonialRef[]
-  layout: "grid" | "carousel" | "featured"
 }
 
 export interface FaqSectionData {
@@ -181,7 +172,6 @@ export interface GallerySectionData {
   title?: string
   intro?: string
   selectedProjects?: ProjectRef[]
-  layout: "grid" | "masonry" | "carousel"
 }
 
 export interface ServiceAreaSectionData {
@@ -191,7 +181,6 @@ export interface ServiceAreaSectionData {
   intro?: string
   autoMode: boolean
   selectedServiceAreas?: ServiceAreaRef[]
-  displayMode: "list" | "grid" | "badges"
 }
 
 export interface ContentSectionData {
@@ -201,7 +190,6 @@ export interface ContentSectionData {
   body: PortableText
   image?: ImageWithAltData
   cta?: LinkData
-  layout: "default" | "imageLeft" | "imageRight" | "centered"
 }
 
 export interface ContactSectionData {
@@ -209,11 +197,6 @@ export interface ContactSectionData {
   _key: string
   title?: string
   intro?: string
-  formMode: "full" | "compact" | "minimal"
-  showPhone: boolean
-  showEmail: boolean
-  showAddress: boolean
-  showHours: boolean
   phone?: string
   email?: string
   address?: {
@@ -222,13 +205,7 @@ export interface ContactSectionData {
     state?: string
     zip?: string
   }
-  businessHours?: Array<{
-    _key: string
-    day: string
-    opens: string
-    closes: string
-    isClosed: boolean
-  }>
+  businessHours?: BusinessHoursData[]
 }
 
 export interface StatsSectionData {
@@ -245,7 +222,6 @@ export interface TeamSectionData {
   title?: string
   intro?: string
   selectedMembers?: TeamMemberRef[]
-  layout: "grid" | "list"
 }
 
 export interface PromoBannerSectionData {

@@ -1,7 +1,5 @@
 // ── Singletons ───────────────────────────────────────────────────────────────
-export { siteSettings } from "./siteSettings"
-export { headerSettings } from "./headerSettings"
-export { footerSettings } from "./footerSettings"
+export { site } from "./site"
 export { homepage } from "./homepage"
 
 // ── Collection documents ──────────────────────────────────────────────────────

@@ -118,17 +118,13 @@ export const sectionsFragment = groq`
     secondaryCta{${linkFragment}},
     image{${imageWithAltFragment}},
     trustItems[]{_key, icon, label},
-    "variant": coalesce(variant, "split"),
     backgroundStyle,
 
     // ── TrustBarSection ─────────────────────────────────────────
     items[]{_key, icon, label, value},
-    "layout": coalesce(layout, "inline"),
 
     // ── ServicesGridSection ──────────────────────────────────────
     "autoMode": coalesce(autoMode, false),
-    cardStyle,
-    "columns": coalesce(columns, "3"),
     "selectedServices": selectedServices[]->{${serviceRefFragment}},
 
     // ── FeatureListSection ───────────────────────────────────────
@@ -136,10 +132,6 @@ export const sectionsFragment = groq`
 
     // ── ProcessSection ───────────────────────────────────────────
     steps[]{_key, title, description, icon},
-    "showNumbers": coalesce(showNumbers, true),
-
-    // ── CtaBandSection ───────────────────────────────────────────
-    "background": coalesce(background, "primary"),
 
     // ── TestimonialSection ───────────────────────────────────────
     "selectedTestimonials": selectedTestimonials[]->{${testimonialRefFragment}},
@@ -152,7 +144,6 @@ export const sectionsFragment = groq`
     "selectedProjects": selectedProjects[]->{${projectRefFragment}},
 
     // ── ServiceAreaSection ───────────────────────────────────────
-    "displayMode": coalesce(displayMode, "grid"),
     "selectedServiceAreas": selectedServiceAreas[]->{${serviceAreaRefFragment}},
 
     // ── ContentSection ───────────────────────────────────────────
@@ -160,11 +151,6 @@ export const sectionsFragment = groq`
     cta{${linkFragment}},
 
     // ── ContactSection ───────────────────────────────────────────
-    "formMode": coalesce(formMode, "full"),
-    "showPhone": coalesce(showPhone, true),
-    "showEmail": coalesce(showEmail, true),
-    "showAddress": coalesce(showAddress, true),
-    "showHours": coalesce(showHours, true),
 
     // ── StatsSection ─────────────────────────────────────────────
     stats[]{_key, value, label, prefix, suffix},

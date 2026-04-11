@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getAllServices, getPageBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getAllServices, getPageBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { HeroSection } from "@/components/sections/HeroSection"
@@ -13,14 +13,14 @@ import type { ServiceListItemData, ServiceRef } from "@/lib/sanity/types"
 export async function generateMetadata(): Promise<Metadata> {
   if (!isSanityConfigured) return { title: "Our Services" }
   try {
-    const [page, settings] = await Promise.all([
+    const [page, site] = await Promise.all([
       getPageBySlug("services"),
-      getSiteSettings(),
+      getSite(),
     ])
     return buildMetadata(page?.seo ?? null, {
       title: "Our Services",
       description: "Browse all services we offer for homeowners and businesses.",
-      siteSettings: settings,
+      siteSettings: site,
       path: "/services",
     })
   } catch {
@@ -68,7 +68,6 @@ export default async function ServicesPage() {
           title: heroTitle,
           subtitle:
             heroSubtitle ?? "Expert home services delivered by licensed, insured professionals.",
-          variant: "compact",
         }}
       />
 
@@ -78,8 +77,6 @@ export default async function ServicesPage() {
             _type: "servicesGridSection",
             _key: "services-grid",
             autoMode: false,
-            columns: "3",
-            cardStyle: "detailed",
             selectedServices: services.map(toRef),
           }}
         />

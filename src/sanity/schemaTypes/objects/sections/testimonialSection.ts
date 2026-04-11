@@ -30,25 +30,11 @@ export const testimonialSection = defineType({
       of: [defineArrayMember({ type: "reference", to: [{ type: "testimonial" }] })],
       hidden: ({ parent }) => Boolean((parent as { autoMode?: boolean } | undefined)?.autoMode),
     }),
-    defineField({
-      name: "layout",
-      title: "Layout",
-      type: "string",
-      options: {
-        list: [
-          { title: "Grid", value: "grid" },
-          { title: "Carousel", value: "carousel" },
-          { title: "Featured", value: "featured" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "grid",
-    }),
   ],
   preview: {
-    select: { title: "title", layout: "layout" },
-    prepare({ title, layout }: { title?: string; layout?: string }) {
-      return { title: title ?? "Testimonials", subtitle: layout ?? "grid" }
+    select: { title: "title" },
+    prepare({ title }: { title?: string }) {
+      return { title: title ?? "Testimonials" }
     },
   },
 })

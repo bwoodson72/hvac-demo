@@ -4,7 +4,6 @@ import {
   imageWithAltFragment,
   heroFragment,
   seoFragment,
-  sectionsFragment,
 } from "./_fragments"
 import type { ServiceData, ServiceListItemData } from "../types"
 
@@ -32,7 +31,6 @@ export const serviceBySlugQuery = groq`
     seo{${seoFragment}},
     iconKey,
     featuredImage{${imageWithAltFragment}},
-    ${sectionsFragment},
     faqs[]->{
       _id,
       question,

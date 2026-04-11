@@ -22,24 +22,11 @@ export const teamSection = defineType({
       type: "array",
       of: [defineArrayMember({ type: "reference", to: [{ type: "teamMember" }] })],
     }),
-    defineField({
-      name: "layout",
-      title: "Layout",
-      type: "string",
-      options: {
-        list: [
-          { title: "Grid", value: "grid" },
-          { title: "List", value: "list" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "grid",
-    }),
   ],
   preview: {
-    select: { title: "title", layout: "layout" },
-    prepare({ title, layout }: { title?: string; layout?: string }) {
-      return { title: title ?? "Team section", subtitle: layout ?? "grid" }
+    select: { title: "title" },
+    prepare({ title }: { title?: string }) {
+      return { title: title ?? "Team section" }
     },
   },
 })

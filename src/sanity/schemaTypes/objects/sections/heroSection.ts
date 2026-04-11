@@ -61,7 +61,7 @@ export const heroSection = defineType({
       name: "backgroundStyle",
       title: "Background style",
       type: "string",
-      description: "Applies when no image is set. Ignored for centered heroes with a background image.",
+      description: "Applies when no image is set.",
       options: {
         list: [
           { title: "Light", value: "light" },
@@ -72,27 +72,11 @@ export const heroSection = defineType({
         layout: "radio",
       },
     }),
-    defineField({
-      name: "variant",
-      title: "Layout variant",
-      type: "string",
-      options: {
-        list: [
-          { title: "Centered", value: "centered" },
-          { title: "Split", value: "split" },
-          { title: "Image right", value: "imageRight" },
-          { title: "Compact", value: "compact" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "split",
-      validation: (Rule) => Rule.required(),
-    }),
   ],
   preview: {
-    select: { title: "title", subtitle: "variant" },
-    prepare({ title, subtitle }: { title?: string; subtitle?: string }) {
-      return { title: title ?? "Hero section", subtitle: subtitle ?? "" }
+    select: { title: "title" },
+    prepare({ title }: { title?: string }) {
+      return { title: title ?? "Hero section" }
     },
   },
 })

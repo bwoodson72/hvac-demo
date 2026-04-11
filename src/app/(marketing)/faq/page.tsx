@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getAllFaqs, getPageBySlug, getSiteSettings } from "@/lib/sanity/queries"
+import { getAllFaqs, getPageBySlug, getSite } from "@/lib/sanity/queries"
 import { buildMetadata } from "@/lib/sanity/mappers"
 import { isSanityConfigured } from "@/lib/sanity/client"
 import { HeroSection } from "@/components/sections/HeroSection"
@@ -16,14 +16,14 @@ import type { FaqData, FaqRef, FaqSectionData } from "@/lib/sanity/types"
 export async function generateMetadata(): Promise<Metadata> {
   if (!isSanityConfigured) return { title: "FAQ" }
   try {
-    const [page, settings] = await Promise.all([
+    const [page, site] = await Promise.all([
       getPageBySlug("faq"),
-      getSiteSettings(),
+      getSite(),
     ])
     return buildMetadata(page?.seo ?? null, {
       title: "Frequently Asked Questions",
       description: "Answers to common questions about our services.",
-      siteSettings: settings,
+      siteSettings: site,
       path: "/faq",
     })
   } catch {
@@ -82,7 +82,6 @@ export default async function FaqPage() {
           title: heroTitle,
           subtitle:
             heroSubtitle ?? "Can't find an answer? Contact us and we'll get back to you promptly.",
-          variant: "compact",
         }}
       />
 

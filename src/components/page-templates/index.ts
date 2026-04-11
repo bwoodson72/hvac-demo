@@ -1,4 +1,5 @@
 export { SectionRenderer } from "./SectionRenderer"
+export { SectionRendererWithContext } from "./SectionRendererWithContext"
 export { StandardPage } from "./StandardPage"
 export { ServicePage } from "./ServicePage"
 export { ServiceAreaPage } from "./ServiceAreaPage"

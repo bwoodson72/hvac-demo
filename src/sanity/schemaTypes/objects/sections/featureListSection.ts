@@ -43,20 +43,6 @@ export const featureListSection = defineType({
         }),
       ],
     }),
-    defineField({
-      name: "layout",
-      title: "Layout",
-      type: "string",
-      options: {
-        list: [
-          { title: "Grid", value: "grid" },
-          { title: "List", value: "list" },
-          { title: "Alternating", value: "alternating" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "grid",
-    }),
   ],
   preview: {
     select: { title: "title", features: "features" },

@@ -4,15 +4,14 @@ import { useState } from "react"
 import { GallerySection } from "@/components/sections/GallerySection"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import type { ProjectRef, GallerySectionData } from "@/lib/sanity/types"
+import type { ProjectRef } from "@/lib/sanity/types"
 
 interface GalleryPageClientProps {
   projects: ProjectRef[]
   categories: string[]
-  layout: GallerySectionData["layout"]
 }
 
-export function GalleryPageClient({ projects, categories, layout }: GalleryPageClientProps) {
+export function GalleryPageClient({ projects, categories }: GalleryPageClientProps) {
   const [active, setActive] = useState<string | null>(null)
 
   const filtered = active ? projects.filter((p) => p.category === active) : projects
@@ -46,7 +45,6 @@ export function GalleryPageClient({ projects, categories, layout }: GalleryPageC
           _type: "gallerySection",
           _key: "gallery-main",
           selectedProjects: filtered,
-          layout,
         }}
       />
     </div>

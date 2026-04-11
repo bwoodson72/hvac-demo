@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import type { TestimonialSectionData, TestimonialRef } from "@/lib/sanity/types"
 
 export function TestimonialSection({ data }: { data: TestimonialSectionData }) {
-  const { title, intro, selectedTestimonials, layout, autoMode } = data
+  const { title, intro, selectedTestimonials, autoMode } = data
   const items = selectedTestimonials ?? []
 
   const header = (title || intro) && (
@@ -30,45 +30,6 @@ export function TestimonialSection({ data }: { data: TestimonialSectionData }) {
     )
   }
 
-  if (layout === "carousel") {
-    return (
-      <Section>
-        <Container className="overflow-hidden">
-          {header}
-          <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {items.map((t) => (
-              <div key={t._id} className="w-[300px] shrink-0 snap-start sm:w-[360px]">
-                <TestimonialCard testimonial={t} />
-              </div>
-            ))}
-          </div>
-        </Container>
-      </Section>
-    )
-  }
-
-  if (layout === "featured" && items.length > 0) {
-    const [featured, ...rest] = items
-    return (
-      <Section>
-        <Container>
-          {header}
-          <div className="flex flex-col gap-6">
-            {featured && <FeaturedTestimonial testimonial={featured} />}
-            {rest.length > 0 && (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {rest.map((t) => (
-                  <TestimonialCard key={t._id} testimonial={t} />
-                ))}
-              </div>
-            )}
-          </div>
-        </Container>
-      </Section>
-    )
-  }
-
-  // grid (default)
   return (
     <Section>
       <Container>
@@ -128,33 +89,5 @@ function TestimonialCard({ testimonial: t }: { testimonial: TestimonialRef }) {
         </footer>
       </CardContent>
     </Card>
-  )
-}
-
-function FeaturedTestimonial({ testimonial: t }: { testimonial: TestimonialRef }) {
-  return (
-    <div className="relative overflow-hidden rounded-2xl bg-primary p-8 text-primary-foreground md:p-12">
-      <span
-        className="absolute -top-4 left-6 font-serif text-9xl leading-none text-white/10 select-none"
-        aria-hidden
-      >
-        &ldquo;
-      </span>
-      <div className="relative flex flex-col gap-4">
-        <StarRating rating={t.rating} />
-        <blockquote className="text-xl font-light leading-relaxed md:text-2xl">
-          &ldquo;{t.quote}&rdquo;
-        </blockquote>
-        <footer className="flex flex-col gap-0.5 opacity-85">
-          <span className="font-semibold">{t.customerName}</span>
-          {t.customerLabel && <span className="text-sm">{t.customerLabel}</span>}
-          {(t.sourceLabel || t.locationLabel) && (
-            <span className="text-sm">
-              {[t.sourceLabel, t.locationLabel].filter(Boolean).join(" · ")}
-            </span>
-          )}
-        </footer>
-      </div>
-    </div>
   )
 }

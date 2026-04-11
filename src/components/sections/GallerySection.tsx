@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import type { GallerySectionData, ProjectRef } from "@/lib/sanity/types"
 
 export function GallerySection({ data }: { data: GallerySectionData }) {
-  const { title, intro, selectedProjects, layout } = data
+  const { title, intro, selectedProjects } = data
   const projects = selectedProjects ?? []
 
   return (
@@ -20,33 +20,11 @@ export function GallerySection({ data }: { data: GallerySectionData }) {
           </div>
         )}
 
-        {layout === "grid" && (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p) => (
-              <ProjectCard key={p._id} project={p} />
-            ))}
-          </div>
-        )}
-
-        {layout === "masonry" && (
-          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-            {projects.map((p) => (
-              <div key={p._id} className="mb-5 break-inside-avoid">
-                <ProjectCard project={p} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {layout === "carousel" && (
-          <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {projects.map((p) => (
-              <div key={p._id} className="w-[280px] shrink-0 snap-start sm:w-[340px]">
-                <ProjectCard project={p} />
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((p) => (
+            <ProjectCard key={p._id} project={p} />
+          ))}
+        </div>
       </Container>
     </Section>
   )
