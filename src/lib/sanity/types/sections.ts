@@ -104,7 +104,8 @@ export interface HeroSectionData {
   secondaryCta?: LinkData
   image?: ImageWithAltData
   trustItems?: TrustItem[]
-  backgroundStyle?: "light" | "dark" | "primary" | "muted"
+  backgroundStyle?: "default" | "dark" | "primary"
+  variant?: "centered" | "split" | "compact"
 }
 
 export interface TrustBarSectionData {

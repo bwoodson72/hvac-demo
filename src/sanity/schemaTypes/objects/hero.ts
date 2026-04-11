@@ -52,35 +52,19 @@ export const hero = defineType({
       name: "backgroundStyle",
       title: "Background style",
       type: "string",
+      description: "Applies when no image is set.",
       options: {
         list: [
-          { title: "Default (white)", value: "default" },
+          { title: "Default (light)", value: "default" },
           { title: "Dark", value: "dark" },
           { title: "Primary color", value: "primary" },
-          { title: "Background image", value: "image" },
         ],
         layout: "radio",
       },
       initialValue: "default",
     }),
-    defineField({
-      name: "variant",
-      title: "Layout variant",
-      type: "string",
-      description: "Controls the hero layout. 'Split' = text left, image right. 'Compact' = smaller height, good for inner pages.",
-      options: {
-        list: [
-          { title: "Centered", value: "centered" },
-          { title: "Split (text left, image right)", value: "split" },
-          { title: "Image right", value: "imageRight" },
-          { title: "Compact", value: "compact" },
-        ],
-        layout: "radio",
-      },
-      initialValue: "centered",
-    }),
   ],
   preview: {
-    select: { title: "title", subtitle: "variant", media: "image.image" },
+    select: { title: "title", media: "image.image" },
   },
 })

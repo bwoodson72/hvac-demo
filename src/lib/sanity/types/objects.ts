@@ -57,8 +57,7 @@ export interface HeroData {
   primaryCta?: LinkData
   secondaryCta?: LinkData
   image?: ImageWithAltData
-  backgroundStyle?: "light" | "dark" | "primary" | "muted"
-  variant?: "centered" | "split" | "imageRight" | "compact"
+  backgroundStyle?: "default" | "dark" | "primary"
 }
 
 export interface BusinessHoursData {

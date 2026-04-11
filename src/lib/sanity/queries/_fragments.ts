@@ -38,8 +38,7 @@ export const heroFragment = groq`
   primaryCta{${linkFragment}},
   secondaryCta{${linkFragment}},
   image{${imageWithAltFragment}},
-  backgroundStyle,
-  variant
+  backgroundStyle
 `
 
 // ── Reference expansions used inside sections ─────────────────────────────────

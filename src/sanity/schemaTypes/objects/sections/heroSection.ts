@@ -64,13 +64,13 @@ export const heroSection = defineType({
       description: "Applies when no image is set.",
       options: {
         list: [
-          { title: "Light", value: "light" },
+          { title: "Default (light)", value: "default" },
           { title: "Dark", value: "dark" },
-          { title: "Primary", value: "primary" },
-          { title: "Muted", value: "muted" },
+          { title: "Primary color", value: "primary" },
         ],
         layout: "radio",
       },
+      initialValue: "default",
     }),
   ],
   preview: {
